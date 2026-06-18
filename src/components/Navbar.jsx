@@ -204,7 +204,17 @@ const handleDownload = async () => {
               />
             </div>
           </div>
-
+          <button
+  onClick={() => {
+    localStorage.removeItem(
+      "resumeData"
+    );
+    window.location.reload();
+  }}
+  className="bg-red-500 text-white px-4 py-2 rounded-full"
+>
+  Reset
+</button>
           <button
             onClick={handleDownload}
             className="bg-lime-400 text-black font-bold px-6 py-2 rounded-full flex items-center gap-2 hover:bg-lime-500"

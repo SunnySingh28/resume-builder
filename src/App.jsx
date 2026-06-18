@@ -1,39 +1,57 @@
-import React, { useState, useRef } from "react";
 import Navbar from "./components/Navbar";
 import ResumeEditor from "./components/ResumeEditor";
 import ATSPanel from "./components/ATSPanel";
 import ResumePreview from "./components/ResumePreview";
+import React, {
+  useState,
+  useRef,
+  useEffect
+} from "react";
 
 function App() {
   const targetRef = useRef();
 
   const [isPreview, setIsPreview] = useState(false);
 
-  const [resumeData, setResumeData] = useState({
-    personal: {
-      name: "",
-      title: "",
-      email: "",
-      phone: "",
-      linkedin: "",
-      github: "",
-      portfolio: "",
-      photo: "",
-    },
+  const [resumeData, setResumeData] = useState(() => {
+  const savedData =
+    localStorage.getItem("resumeData");
 
-    summary: "",
+  return savedData
+    ? JSON.parse(savedData)
+    : {
+        personal: {
+          name: "",
+          title: "",
+          email: "",
+          phone: "",
+          linkedin: "",
+          github: "",
+          portfolio: "",
+          photo: "",
+        },
 
-    experience: [],
+        summary: "",
 
-    education: [],
+        experience: [],
 
-    achievements: "",
+        education: [],
 
-    skills: {
-      industry: "",
-      tools: "",
-    },
-  });
+        achievements: "",
+
+        skills: {
+          industry: "",
+          tools: "",
+        },
+      };
+});
+
+useEffect(() => {
+  localStorage.setItem(
+    "resumeData",
+    JSON.stringify(resumeData)
+  );
+}, [resumeData]);
 
   return (
     <div className="h-screen w-screen bg-[#F5F7F4] flex flex-col overflow-hidden">
@@ -49,7 +67,7 @@ function App() {
 
         {/* LEFT SECTION */}
 
-        <div className="w-[70%] overflow-y-auto">
+        <div className="flex-1 overflow-y-auto">
 
           {isPreview ? (
 
@@ -80,7 +98,7 @@ function App() {
 
         {/* RIGHT SECTION */}
 
-        <div className="w-[30%] overflow-y-auto border-l bg-[#FAFAFA]">
+        <div className="w-[360px] overflow-y-auto border-l bg-[#FAFAFA]">
 
           <ATSPanel
             resumeData={resumeData}

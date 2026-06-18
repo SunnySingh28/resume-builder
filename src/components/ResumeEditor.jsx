@@ -27,7 +27,18 @@ function ResumeEditor({ resumeData, setResumeData }) {
       ...resumeData,
       experience: [
         ...resumeData.experience, 
-        { id: Date.now(), title: "", company: "", location: "", date: "", bullets: "" }
+        {
+  id: Date.now(),
+  title: "",
+  company: "",
+  location: "",
+  startMonth: "",
+  startYear: "",
+  endMonth: "",
+  endYear: "",
+  current: false,
+  bullets: ""
+}
       ]
     });
   };
@@ -44,7 +55,15 @@ function ResumeEditor({ resumeData, setResumeData }) {
       ...resumeData,
       education: [
         ...resumeData.education, 
-        { id: Date.now(), degree: "", school: "", year: "", achievements: "" }
+        {
+  id: Date.now(),
+  degree: "",
+  school: "",
+  startYear: "",
+  endYear: "",
+  current: false,
+  achievements: ""
+}
       ]
     });
   };
@@ -57,7 +76,7 @@ function ResumeEditor({ resumeData, setResumeData }) {
   };
 
   return (
-    <div className="bg-white px-8 py-8 w-full max-w-[800px] mx-auto">
+    <div className="bg-white px-10 py-8 w-full">
       {/* Personal Info */}
       <div className="mb-10 text-center">
         <input
@@ -76,13 +95,52 @@ function ResumeEditor({ resumeData, setResumeData }) {
           className="text-xl text-[#65BA46] font-medium w-full outline-none hover:bg-gray-50 focus:bg-white focus:ring-2 focus:ring-green-100 rounded-md px-2 py-1 text-center transition-all mt-1"
           placeholder="Professional Title"
         />
-        <div className="flex gap-4 mt-2 justify-center flex-wrap">
-          <input type="text" name="email" value={resumeData.personal.email} onChange={handlePersonalChange} className="text-sm text-gray-500 outline-none hover:bg-gray-50 focus:ring-2 focus:ring-green-100 px-2 py-1 rounded-md text-center max-w-[200px]" placeholder="Email" />
-          <input type="text" name="phone" value={resumeData.personal.phone} onChange={handlePersonalChange} className="text-sm text-gray-500 outline-none hover:bg-gray-50 focus:ring-2 focus:ring-green-100 px-2 py-1 rounded-md text-center max-w-[150px]" placeholder="Phone" />
-          <input type="text" name="linkedin" value={resumeData.personal.linkedin} onChange={handlePersonalChange} className="text-sm text-blue-600 outline-none hover:bg-gray-50 focus:ring-2 focus:ring-green-100 px-2 py-1 rounded-md text-center max-w-[200px]" placeholder="LinkedIn (URL)" />
-          <input type="text" name="github" value={resumeData.personal.github} onChange={handlePersonalChange} className="text-sm text-gray-700 outline-none hover:bg-gray-50 focus:ring-2 focus:ring-green-100 px-2 py-1 rounded-md text-center max-w-[200px]" placeholder="GitHub (URL)" />
-          <input type="text" name="portfolio" value={resumeData.personal.portfolio} onChange={handlePersonalChange} className="text-sm text-green-700 outline-none hover:bg-gray-50 focus:ring-2 focus:ring-green-100 px-2 py-1 rounded-md text-center max-w-[200px]" placeholder="Portfolio (URL)" />
-        </div>
+       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+  <input
+    type="text"
+    name="email"
+    value={resumeData.personal.email}
+    onChange={handlePersonalChange}
+    className="text-sm text-gray-500 outline-none hover:bg-gray-50 focus:ring-2 focus:ring-green-100 px-3 py-2 rounded-md border border-gray-100 w-full"
+    placeholder="Email"
+  />
+
+  <input
+    type="text"
+    name="phone"
+    value={resumeData.personal.phone}
+    onChange={handlePersonalChange}
+    className="text-sm text-gray-500 outline-none hover:bg-gray-50 focus:ring-2 focus:ring-green-100 px-3 py-2 rounded-md border border-gray-100 w-full"
+    placeholder="Phone"
+  />
+
+  <input
+    type="text"
+    name="linkedin"
+    value={resumeData.personal.linkedin}
+    onChange={handlePersonalChange}
+    className="text-sm text-blue-600 outline-none hover:bg-gray-50 focus:ring-2 focus:ring-green-100 px-3 py-2 rounded-md border border-gray-100 w-full"
+    placeholder="LinkedIn URL"
+  />
+
+  <input
+    type="text"
+    name="github"
+    value={resumeData.personal.github}
+    onChange={handlePersonalChange}
+    className="text-sm text-gray-700 outline-none hover:bg-gray-50 focus:ring-2 focus:ring-green-100 px-3 py-2 rounded-md border border-gray-100 w-full"
+    placeholder="GitHub URL"
+  />
+
+  <input
+    type="text"
+    name="portfolio"
+    value={resumeData.personal.portfolio}
+    onChange={handlePersonalChange}
+    className="text-sm text-green-700 outline-none hover:bg-gray-50 focus:ring-2 focus:ring-green-100 px-3 py-2 rounded-md border border-gray-100 w-full"
+    placeholder="Portfolio URL"
+  />
+</div>
       </div>
 
       {/* Education Section */}
@@ -105,20 +163,60 @@ function ResumeEditor({ resumeData, setResumeData }) {
                 onChange={(e) => handleEduChange(edu.id, 'school', e.target.value)}
                 placeholder="School / University"
               />
-              <span>-</span>
-              <input 
-                className="outline-none bg-transparent hover:bg-white focus:ring-2 focus:ring-green-100 px-2 py-1 rounded-md max-w-[100px]"
-                value={edu.year}
-                onChange={(e) => handleEduChange(edu.id, 'year', e.target.value)}
-                placeholder="Completion Year"
-              />
+              {/* <span>-</span> */}
+              <input
+  className="outline-none bg-transparent hover:bg-white focus:ring-2 focus:ring-green-100 px-2 py-1 rounded-md max-w-[100px]"
+  value={edu.startYear || ""}
+  onChange={(e) =>
+    handleEduChange(
+      edu.id,
+      "startYear",
+      e.target.value
+    )
+  }
+  placeholder="Start Year"
+/>
+
+<label className="flex items-center gap-2 text-sm font-medium">
+  <input
+    type="checkbox"
+    checked={edu.current || false}
+    onChange={(e) =>
+      handleEduChange(
+        edu.id,
+        "current",
+        e.target.checked
+      )
+    }
+  />
+  Present
+</label>
+
+{!edu.current && (
+  <>
+    <span>-</span>
+
+    <input
+      className="outline-none bg-transparent hover:bg-white focus:ring-2 focus:ring-green-100 px-2 py-1 rounded-md max-w-[100px]"
+      value={edu.endYear || ""}
+      onChange={(e) =>
+        handleEduChange(
+          edu.id,
+          "endYear",
+          e.target.value
+        )
+      }
+      placeholder="End Year"
+    />
+  </>
+)}
             </div>
             
             <textarea 
               className="w-full text-sm text-gray-500 outline-none bg-transparent hover:bg-white focus:ring-2 focus:ring-green-100 px-2 py-2 -ml-2 rounded-md resize-none min-h-[50px]"
               value={edu.achievements}
               onChange={(e) => handleEduChange(edu.id, 'achievements', e.target.value)}
-              placeholder="Major academic achievements..."
+              placeholder="Academic Description..."
             />
 
             <button 
@@ -182,13 +280,110 @@ function ResumeEditor({ resumeData, setResumeData }) {
                 onChange={(e) => handleExpChange(exp.id, 'location', e.target.value)}
                 placeholder="Location"
               />
-              <span>-</span>
-              <input 
-                className="outline-none bg-transparent hover:bg-white focus:ring-2 focus:ring-green-100 px-2 py-1 rounded-md w-full max-w-[250px]"
-                value={exp.date}
-                onChange={(e) => handleExpChange(exp.id, 'date', e.target.value)}
-                placeholder="Start Date - End Date"
-              />
+
+              <div className="flex gap-2 flex-wrap">
+
+  <select
+    value={exp.startMonth}
+    onChange={(e) =>
+      handleExpChange(
+        exp.id,
+        "startMonth",
+        e.target.value
+      )
+    }
+    className="border rounded-md px-2 py-1"
+  >
+    <option value="">Start Month</option>
+    <option>Jan</option>
+    <option>Feb</option>
+    <option>Mar</option>
+    <option>Apr</option>
+    <option>May</option>
+    <option>Jun</option>
+    <option>Jul</option>
+    <option>Aug</option>
+    <option>Sep</option>
+    <option>Oct</option>
+    <option>Nov</option>
+    <option>Dec</option>
+  </select>
+
+  <input
+    type="number"
+    placeholder="Start Year"
+    value={exp.startYear}
+    onChange={(e) =>
+      handleExpChange(
+        exp.id,
+        "startYear",
+        e.target.value
+      )
+    }
+    className="border rounded-md px-2 py-1 w-[120px]"
+  />
+
+ <label className="flex items-center gap-2 text-sm font-medium">
+  <input
+    type="checkbox"
+    checked={exp.current || false}
+    onChange={(e) =>
+      handleExpChange(
+        exp.id,
+        "current",
+        e.target.checked
+      )
+    }
+  />
+  Present
+</label>
+
+{!exp.current && (
+  <>
+    <span>-</span>
+
+    <select
+      value={exp.endMonth}
+      onChange={(e) =>
+        handleExpChange(
+          exp.id,
+          "endMonth",
+          e.target.value
+        )
+      }
+      className="border rounded-md px-2 py-1"
+    >
+      <option value="">End Month</option>
+      <option>Jan</option>
+      <option>Feb</option>
+      <option>Mar</option>
+      <option>Apr</option>
+      <option>May</option>
+      <option>Jun</option>
+      <option>Jul</option>
+      <option>Aug</option>
+      <option>Sep</option>
+      <option>Oct</option>
+      <option>Nov</option>
+      <option>Dec</option>
+    </select>
+
+    <input
+      type="number"
+      placeholder="End Year"
+      value={exp.endYear}
+      onChange={(e) =>
+        handleExpChange(
+          exp.id,
+          "endYear",
+          e.target.value
+        )
+      }
+      className="border rounded-md px-2 py-1 w-[120px]"
+    />
+  </>
+)}
+</div>
             </div>
             
             <textarea 

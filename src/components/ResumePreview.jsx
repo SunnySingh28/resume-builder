@@ -160,7 +160,11 @@ return ( <div
               </p>
 
               <p className="text-sm text-gray-500">
-                {edu.year}
+               {edu.startYear}
+               {" - "}
+               {edu.current
+                  ? "Present"
+                  : edu.endYear}
               </p>
 
             </div>
@@ -236,9 +240,13 @@ return ( <div
 
                 </div>
 
-                <span className="text-sm text-gray-500">
-                  {exp.date}
-                </span>
+               <span className="text-sm text-gray-500">
+ {exp.startMonth} {exp.startYear}
+{" - "}
+{exp.current
+  ? "Present"
+  : `${exp.endMonth} ${exp.endYear}`}
+</span>
 
               </div>
 
