@@ -15,11 +15,20 @@ function App() {
 
   const [resumeData, setResumeData] = useState(() => {
   const savedData =
-    localStorage.getItem("resumeData");
+  localStorage.getItem("resumeData");
 
-  return savedData
-    ? JSON.parse(savedData)
-    : {
+if (savedData) {
+  const parsed = JSON.parse(savedData);
+
+  return {
+    ...parsed,
+    skills: Array.isArray(parsed.skills)
+      ? parsed.skills
+      : []
+  };
+}
+
+return {
         personal: {
           name: "",
           title: "",
@@ -39,10 +48,7 @@ function App() {
 
         achievements: "",
 
-        skills: {
-          industry: "",
-          tools: "",
-        },
+        skills: []
       };
 });
 
@@ -67,11 +73,11 @@ useEffect(() => {
 
         {/* LEFT SECTION */}
 
-        <div className="flex-1 overflow-y-auto">
+       <div className="flex-[4] overflow-y-auto">
 
           {isPreview ? (
 
-            <div className="h-full overflow-y-auto bg-[#F3F4F6] p-6 flex justify-center">
+            <div className="h-full overflow-y-auto bg-[#F3F4F6] p-4">
 
               <ResumePreview
                 resumeData={resumeData}
@@ -98,7 +104,7 @@ useEffect(() => {
 
         {/* RIGHT SECTION */}
 
-        <div className="w-[360px] overflow-y-auto border-l bg-[#FAFAFA]">
+       <div className="flex-[1.4] overflow-y-auto border-l bg-[#FAFAFA]">
 
           <ATSPanel
             resumeData={resumeData}

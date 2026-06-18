@@ -1,49 +1,186 @@
 import React from 'react';
 
 function ATSPanel({ resumeData }) {
-  let score = 20;
-  let impact = 20;
-  let brevity = 20;
-  let style = 20;
-  let softSkills = 20;
+  let score = 0;
+let impact = 20;
+let brevity = 20;
+let style = 20;
+let softSkills = 20;
 
-  // Add points based on completed fields
-  if (resumeData.personal.name) score += 5;
-  if (resumeData.personal.email) score += 5;
-  if (resumeData.personal.linkedin || resumeData.personal.github || resumeData.personal.portfolio) {
-    score += 5;
-    style += 10;
-  }
-  if (resumeData.summary) {
-    score += 10;
-    brevity += 10;
-    impact += 10;
-  }
-  if (resumeData.experience.length > 0) {
-    score += 15;
-    impact += 15;
-    brevity += 10;
-  }
-  if (resumeData.education.length > 0) score += 10;
-  if (resumeData.achievements) {
-    score += 10;
-    impact += 20;
-  }
-  if (resumeData.skills.industry) {
-     score += 10;
-     style += 20;
-  }
-  if (resumeData.skills.tools) {
-     score += 10;
-     softSkills += 40;
-  }
+const suggestions = [];
+const strengths = [];
+const actionVerbs = [
+  "developed",
+  "built",
+  "implemented",
+  "designed",
+  "optimized",
+  "created",
+  "led",
+  "improved",
+  "managed",
+  "engineered"
+];
 
-  // bound scores to 100
-  score = Math.min(100, score);
-  impact = Math.min(100, impact);
-  brevity = Math.min(100, brevity);
-  style = Math.min(100, style);
-  softSkills = Math.min(100, softSkills);
+// Personal Information
+if (resumeData.personal.name) score += 5;
+else suggestions.push("Add your full name");
+
+if (resumeData.personal.email) score += 5;
+else suggestions.push("Add email address");
+
+if (resumeData.personal.phone) score += 5;
+else suggestions.push("Add phone number");
+
+if (resumeData.personal.linkedin) score += 5;
+else suggestions.push("Add LinkedIn profile");
+
+if (resumeData.personal.github) score += 5;
+
+if (resumeData.personal.portfolio) score += 5;
+else suggestions.push("Add portfolio website");
+
+// Summary
+if (resumeData.summary.trim().length >= 50) {
+  score += 15;
+  brevity += 20;
+}
+else {
+  suggestions.push("Write a stronger professional summary");
+}
+
+// Experience
+if (resumeData.experience.length > 0) {
+  score += 20;
+  impact += 25;
+
+  strengths.push(
+    `${resumeData.experience.length} experience entries added`
+  );
+}
+
+// Education
+if (resumeData.education.length > 0) {
+  score += 10;
+}
+else {
+  suggestions.push("Add education details");
+}
+
+// Skills
+const totalSkills =
+  Array.isArray(resumeData.skills)
+    ? resumeData.skills.length
+    : 0;
+
+if (totalSkills >= 3) {
+  score += 10;
+  style += 20;
+}
+
+if (totalSkills >= 6) {
+  score += 10;
+  softSkills += 20;
+}
+
+if (totalSkills >= 10) {
+  score += 10;
+  impact += 10;
+}
+else {
+  suggestions.push("Add more technical skills");
+}
+
+// Achievements
+if (resumeData.achievements.trim()) {
+  score += 15;
+  impact += 25;
+}
+else {
+  suggestions.push("Add achievements or certifications");
+}
+
+// Quantified Achievements Detection
+
+const achievementText = `
+${resumeData.achievements}
+${resumeData.experience
+  .map(exp => exp.bullets || "")
+  .join(" ")}
+`;
+
+const quantifiedMatches =
+  achievementText.match(
+    /\d+%|\d+\+|\d+\s*(users|projects|clients|customers|downloads|sales|revenue|teams|apps)/gi
+  ) || [];
+
+const quantifiedCount = quantifiedMatches.length;
+if (totalSkills >= 5) {
+  strengths.push(
+    `${totalSkills} skills added`
+  );
+}
+
+if (quantifiedCount >= 1) {
+  score += 5;
+  impact += 10;
+}
+
+if (quantifiedCount >= 3) {
+  score += 5;
+  impact += 10;
+}
+
+if (quantifiedCount >= 5) {
+  score += 5;
+  impact += 10;
+}
+
+if (quantifiedCount > 0) {
+  strengths.push(
+    `${quantifiedCount} quantified achievement(s) detected`
+  );
+}
+else {
+  suggestions.push(
+    "Add numbers like 40%, 500+, 10 projects"
+  );
+}
+const resumeText = `
+${resumeData.summary}
+${resumeData.achievements}
+${resumeData.experience
+  .map(exp => exp.bullets || "")
+  .join(" ")}
+`.toLowerCase();
+
+const detectedActionVerbs =
+  actionVerbs.filter(word =>
+    resumeText.includes(word)
+  );
+
+if (detectedActionVerbs.length >= 3) {
+  score += 10;
+  impact += 10;
+
+  strengths.push(
+    `${detectedActionVerbs.length} strong action verbs detected`
+  );
+}
+else {
+  suggestions.push(
+    "Use action verbs like Developed, Built, Optimized"
+  );
+}
+
+score = Math.max(
+  20,
+  Math.min(100, score)
+);
+impact = Math.min(100, impact);
+brevity = Math.min(100, brevity);
+style = Math.min(100, style);
+softSkills = Math.min(100, softSkills);
 
   const dasharrayValue = `${score * 2.51} 251`; 
 
@@ -103,7 +240,40 @@ function ATSPanel({ resumeData }) {
             </div>
           </div>
         </div>
+         
+         <div className="bg-white rounded-xl border border-gray-100 p-4 mb-4">
+  <h3 className="font-bold text-sm mb-3 text-green-700">
+    Resume Strengths
+  </h3>
 
+  <ul className="space-y-2 text-xs text-gray-700">
+    {strengths.length > 0 ? (
+      strengths.map((item, index) => (
+        <li key={index}>
+          ✓ {item}
+        </li>
+      ))
+    ) : (
+      <li>
+  Add measurable impact for stronger ATS score
+</li>
+    )}
+  </ul>
+</div>
+
+         <div className="bg-white rounded-xl border border-gray-100 p-4 mb-5">
+  <h3 className="font-bold text-sm mb-3 text-gray-800">
+    ATS Suggestions
+  </h3>
+
+  <ul className="space-y-2 text-xs text-gray-600">
+    {suggestions.slice(0, 5).map((item, index) => (
+      <li key={index}>
+        • {item}
+      </li>
+    ))}
+  </ul>
+</div>
         {/* Vertical list */}
         <div className="space-y-2.5">
           <div className="flex items-center justify-between bg-white border border-gray-100/80 rounded-xl p-3 shadow-sm text-sm">

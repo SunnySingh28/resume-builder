@@ -16,12 +16,13 @@ return ( <div
   style={{
     background: "#ffffff",
     color: "#111827",
-    width: "794px",
+    width: "100%",
+    maxWidth: "1000px",
     minHeight: "1123px",
     overflow: "hidden",
     boxSizing: "border-box",
   }}
-  className="mx-auto"
+  className="w-full"
 >
 
   {/* Header */}
@@ -106,40 +107,28 @@ return ( <div
 
     <div className="col-span-4 bg-gray-50 p-6 border-r">
 
-      {(resumeData.skills.industry ||
-        resumeData.skills.tools) && (
-        <div className="mb-8">
+      {resumeData.skills.length > 0 && (
+  <div className="mb-8">
 
-          <h3 className="font-bold text-lg mb-3 border-b pb-2">
-            Skills
-          </h3>
+    <h3 className="font-bold text-lg mb-3 border-b pb-2">
+      Skills
+    </h3>
 
-          {resumeData.skills.industry && (
-            <div className="mb-3">
-              <p className="font-semibold">
-                Industry Knowledge
-              </p>
+    <div className="flex flex-wrap gap-2">
 
-              <p className="text-sm text-gray-700">
-                {resumeData.skills.industry}
-              </p>
-            </div>
-          )}
+      {resumeData.skills.map((skill) => (
+        <span
+          key={skill.id}
+          className="bg-[#65BA46] text-white px-3 py-1 rounded-full text-sm"
+        >
+          {skill.name}
+        </span>
+      ))}
 
-          {resumeData.skills.tools && (
-            <div>
-              <p className="font-semibold">
-                Tools & Technologies
-              </p>
+    </div>
 
-              <p className="text-sm text-gray-700">
-                {resumeData.skills.tools}
-              </p>
-            </div>
-          )}
-
-        </div>
-      )}
+  </div>
+)}
 
       {resumeData.education.length > 0 && (
         <div className="mb-8">
@@ -241,12 +230,12 @@ return ( <div
                 </div>
 
                <span className="text-sm text-gray-500">
- {exp.startMonth} {exp.startYear}
-{" - "}
-{exp.current
-  ? "Present"
-  : `${exp.endMonth} ${exp.endYear}`}
-</span>
+                 {exp.startMonth} {exp.startYear}
+                    {" - "}
+                     {exp.current
+                    ? "Present"
+                : `${exp.endMonth} ${exp.endYear}`}
+                </span>
 
               </div>
 

@@ -68,12 +68,29 @@ function ResumeEditor({ resumeData, setResumeData }) {
     });
   };
 
-  const handleSkillsChange = (field, value) => {
-    setResumeData({
-      ...resumeData,
-      skills: { ...resumeData.skills, [field]: value }
-    });
-  };
+  const addSkill = () => {
+  setResumeData({
+    ...resumeData,
+    skills: [
+      ...resumeData.skills,
+      {
+        id: Date.now(),
+        name: ""
+      }
+    ]
+  });
+};
+
+const handleSkillChange = (id, value) => {
+  setResumeData({
+    ...resumeData,
+    skills: resumeData.skills.map(skill =>
+      skill.id === id
+        ? { ...skill, name: value }
+        : skill
+    )
+  });
+};
 
   return (
     <div className="bg-white px-10 py-8 w-full">
@@ -413,29 +430,53 @@ function ResumeEditor({ resumeData, setResumeData }) {
       </div>
 
       {/* Skills Section */}
-      <div className="mb-10">
-        <h2 className="text-2xl font-bold mb-5 text-gray-900 tracking-tight border-b pb-2">Skills</h2>
-        
-        <div className="mb-5 p-3 hover:bg-[#F9FAF8] rounded-xl transition border border-transparent hover:border-gray-100">
-          <h4 className="font-bold text-gray-900 text-[14px] mb-1 pl-2">Industry Knowledge:</h4>
-          <textarea 
-            className="w-full text-[14px] text-gray-700 leading-relaxed outline-none bg-transparent hover:bg-white focus:ring-2 focus:ring-green-100 px-2 py-2 rounded-md resize-none min-h-[60px]"
-            value={resumeData.skills.industry}
-            onChange={(e) => handleSkillsChange('industry', e.target.value)}
-            placeholder="E.g., Product Design, User Interface..."
-          />
-        </div>
 
-        <div className="p-3 hover:bg-[#F9FAF8] rounded-xl transition border border-transparent hover:border-gray-100">
-          <h4 className="font-bold text-gray-900 text-[14px] mb-1 pl-2">Tools & Technologies:</h4>
-          <textarea 
-            className="w-full text-[14px] text-gray-700 leading-relaxed outline-none bg-transparent hover:bg-white focus:ring-2 focus:ring-green-100 px-2 py-2 rounded-md resize-none min-h-[60px]"
-            value={resumeData.skills.tools}
-            onChange={(e) => handleSkillsChange('tools', e.target.value)}
-            placeholder="E.g., Figma, React, Python..."
-          />
-        </div>
-      </div>
+       <div className="mb-10">
+  <h2 className="text-2xl font-bold mb-5 text-gray-900 tracking-tight border-b pb-2">
+    Skills
+  </h2>
+
+  {(resumeData.skills || []).map((skill) => (
+    <div
+      key={skill.id}
+      className="mb-3 flex gap-2"
+    >
+      <input
+        value={skill.name}
+        onChange={(e) =>
+          handleSkillChange(
+            skill.id,
+            e.target.value
+          )
+        }
+        placeholder="Skill Name"
+        className="w-full border rounded-lg px-3 py-2"
+      />
+
+      <button
+        onClick={() =>
+          setResumeData({
+            ...resumeData,
+            skills:
+              resumeData.skills.filter(
+                s => s.id !== skill.id
+              )
+          })
+        }
+        className="text-red-500"
+      >
+        Delete
+      </button>
+    </div>
+  ))}
+
+  <button
+    onClick={addSkill}
+    className="w-full py-2.5 border border-dashed border-[#65BA46] rounded-xl text-[#65BA46] font-semibold"
+  >
+    + Add Skill
+  </button>
+</div>
 
       {/* Achievements Section */}
       <div className="mb-10">
