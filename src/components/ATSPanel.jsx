@@ -1,6 +1,9 @@
 import React from 'react';
 
-function ATSPanel({ resumeData }) {
+function ATSPanel({
+ resumeData,
+ darkMode
+}) {
   let score = 0;
 let impact = 20;
 let brevity = 20;
@@ -185,9 +188,19 @@ softSkills = Math.min(100, softSkills);
   const dasharrayValue = `${score * 2.51} 251`; 
 
   return (
-    <div className="bg-[#FAFAFA] pb-10 pt-8 h-full">
+    <div
+ className={`pb-10 pt-8 h-full ${
+   darkMode
+     ? "bg-[#111827] text-white"
+     : "bg-[#FAFAFA]"
+ }`}
+>
       <div className="px-8">
-        <h2 className="text-[22px] font-bold mb-1 text-black tracking-tight">Overview</h2>
+        <h2
+  className={`text-[22px] font-bold mb-1 tracking-tight ${
+    darkMode ? "text-white" : "text-black"
+  }`}
+>Overview</h2>
         <p className="text-gray-500 text-[13px] mb-8">Welcome to your LinkedIn profile review, {resumeData.personal.name || "User"}!</p>
 
         <div className="flex flex-col items-center mb-8">
@@ -196,14 +209,28 @@ softSkills = Math.min(100, softSkills);
               <circle cx="50" cy="50" r="40" fill="none" stroke="#E5E7EB" strokeWidth="12" />
               {score > 0 && <circle cx="50" cy="50" r="40" fill="none" stroke="#65BA46" strokeWidth="12" strokeDasharray={dasharrayValue} />}
             </svg>
-            <div className="absolute text-4xl font-extrabold text-black tracking-tight">{score}%</div>
+            <div
+  className={`absolute text-4xl font-extrabold tracking-tight ${
+    darkMode ? "text-white" : "text-black"
+  }`}
+>{score}%</div>
           </div>
-          <p className="text-[13px] font-semibold text-gray-800 mt-6">Your resume scored {score} out of 100</p>
+          <p
+  className={`text-[13px] font-semibold mt-6 ${
+    darkMode ? "text-gray-200" : "text-gray-800"
+  }`}
+>Your resume scored {score} out of 100</p>
         </div>
 
         {/* 4 grid boxes */}
         <div className="grid grid-cols-2 gap-3 mb-6">
-          <div className="bg-white border text-center border-gray-100/80 rounded-xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+          <div
+  className={`border text-center rounded-xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] ${
+    darkMode
+      ? "bg-[#1F2937] border-gray-700"
+      : "bg-white border-gray-100/80"
+  }`}
+>
             <p className="text-gray-500 text-[13px] mb-2 text-left font-medium">Impact</p>
             <div className="flex items-end justify-between">
               <span className="text-2xl font-bold text-gray-800">{impact}</span>
@@ -212,7 +239,13 @@ softSkills = Math.min(100, softSkills);
               </span>
             </div>
           </div>
-          <div className="bg-white border text-center border-gray-100/80 rounded-xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+          <div
+  className={`border text-center rounded-xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] ${
+    darkMode
+      ? "bg-[#1F2937] border-gray-700"
+      : "bg-white border-gray-100/80"
+  }`}
+>
             <p className="text-gray-500 text-[13px] mb-2 text-left font-medium">Brevity</p>
             <div className="flex items-end justify-between">
               <span className="text-2xl font-bold text-gray-800">{brevity}</span>
@@ -221,7 +254,13 @@ softSkills = Math.min(100, softSkills);
               </span>
             </div>
           </div>
-          <div className="bg-white border text-center border-gray-100/80 rounded-xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+          <div
+  className={`border text-center rounded-xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] ${
+    darkMode
+      ? "bg-[#1F2937] border-gray-700"
+      : "bg-white border-gray-100/80"
+  }`}
+>
             <p className="text-gray-500 text-[13px] mb-2 text-left font-medium">Style</p>
             <div className="flex items-end justify-between">
               <span className="text-2xl font-bold text-gray-800">{style}</span>
@@ -230,7 +269,13 @@ softSkills = Math.min(100, softSkills);
               </span>
             </div>
           </div>
-          <div className="bg-white border text-center border-gray-100/80 rounded-xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+          <div
+  className={`border text-center rounded-xl p-4 shadow-[0_2px_10px_rgba(0,0,0,0.02)] ${
+    darkMode
+      ? "bg-[#1F2937] border-gray-700"
+      : "bg-white border-gray-100/80"
+  }`}
+>
             <p className="text-gray-500 text-[13px] mb-2 text-left font-medium">Soft Skills</p>
             <div className="flex items-end justify-between">
               <span className="text-2xl font-bold text-gray-800">{softSkills}</span>
@@ -241,7 +286,13 @@ softSkills = Math.min(100, softSkills);
           </div>
         </div>
          
-         <div className="bg-white rounded-xl border border-gray-100 p-4 mb-4">
+         <div
+  className={`rounded-xl border p-4 mb-4 ${
+    darkMode
+      ? "bg-[#1F2937] border-gray-700"
+      : "bg-white border-gray-100"
+  }`}
+>
   <h3 className="font-bold text-sm mb-3 text-green-700">
     Resume Strengths
   </h3>
@@ -261,7 +312,13 @@ softSkills = Math.min(100, softSkills);
   </ul>
 </div>
 
-         <div className="bg-white rounded-xl border border-gray-100 p-4 mb-5">
+         <div
+  className={`rounded-xl border p-4 mb-5 ${
+    darkMode
+      ? "bg-[#1F2937] border-gray-700"
+      : "bg-white border-gray-100"
+  }`}
+>
   <h3 className="font-bold text-sm mb-3 text-gray-800">
     ATS Suggestions
   </h3>
@@ -276,7 +333,13 @@ softSkills = Math.min(100, softSkills);
 </div>
         {/* Vertical list */}
         <div className="space-y-2.5">
-          <div className="flex items-center justify-between bg-white border border-gray-100/80 rounded-xl p-3 shadow-sm text-sm">
+          <div
+  className={`flex items-center justify-between rounded-xl p-3 shadow-sm text-sm border ${
+    darkMode
+      ? "bg-[#1F2937] border-gray-700"
+      : "bg-white border-gray-100/80"
+  }`}
+>
             <div className="flex items-center gap-3">
               <span className="text-gray-400 font-bold w-5 text-center">H</span>
               <span className="font-medium text-gray-800 text-[13px]">Headline & Social</span>
@@ -285,7 +348,13 @@ softSkills = Math.min(100, softSkills);
               {resumeData.personal.title ? '10/10' : '0/10'}
             </span>
           </div>
-          <div className="flex items-center justify-between bg-white border border-gray-100/80 rounded-xl p-3 shadow-sm text-sm">
+          <div
+  className={`flex items-center justify-between rounded-xl p-3 shadow-sm text-sm border ${
+    darkMode
+      ? "bg-[#1F2937] border-gray-700"
+      : "bg-white border-gray-100/80"
+  }`}
+>
             <div className="flex items-center gap-3">
               <span className="text-gray-400 text-lg w-5 text-center leading-none">📇</span>
               <span className="font-medium text-gray-800 text-[13px]">Summary</span>
@@ -294,7 +363,13 @@ softSkills = Math.min(100, softSkills);
               {resumeData.summary ? '10/10' : '0/10'}
             </span>
           </div>
-          <div className="flex items-center justify-between bg-white border border-gray-100/80 rounded-xl p-3 shadow-sm text-sm">
+          <div
+  className={`flex items-center justify-between rounded-xl p-3 shadow-sm text-sm border ${
+    darkMode
+      ? "bg-[#1F2937] border-gray-700"
+      : "bg-white border-gray-100/80"
+  }`}
+>
             <div className="flex items-center gap-3">
               <span className="text-gray-400 text-lg w-5 text-center leading-none">💼</span>
               <span className="font-medium text-gray-800 text-[13px]">Experience</span>
@@ -303,7 +378,13 @@ softSkills = Math.min(100, softSkills);
               {resumeData.experience.length > 0 ? '10/10' : '0/10'}
             </span>
           </div>
-          <div className="flex items-center justify-between bg-white border border-gray-100/80 rounded-xl p-3 shadow-sm text-sm">
+          <div
+  className={`flex items-center justify-between rounded-xl p-3 shadow-sm text-sm border ${
+    darkMode
+      ? "bg-[#1F2937] border-gray-700"
+      : "bg-white border-gray-100/80"
+  }`}
+>
             <div className="flex items-center gap-3">
               <span className="text-gray-400 text-lg w-5 text-center leading-none">🎓</span>
               <span className="font-medium text-gray-800 text-[13px]">Education</span>
@@ -312,7 +393,13 @@ softSkills = Math.min(100, softSkills);
               {resumeData.education.length > 0 ? '10/10' : '0/10'}
             </span>
           </div>
-           <div className="flex items-center justify-between bg-white border border-gray-100/80 rounded-xl p-3 shadow-sm text-sm">
+           <div
+  className={`flex items-center justify-between rounded-xl p-3 shadow-sm text-sm border ${
+    darkMode
+      ? "bg-[#1F2937] border-gray-700"
+      : "bg-white border-gray-100/80"
+  }`}
+>
             <div className="flex items-center gap-3">
               <span className="text-gray-400 text-lg w-5 text-center leading-none">🏆</span>
               <span className="font-medium text-gray-800 text-[13px]">Achievements</span>

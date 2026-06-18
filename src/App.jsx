@@ -13,6 +13,9 @@ function App() {
 
   const [isPreview, setIsPreview] = useState(false);
 
+  const [template, setTemplate] =
+useState("modern");
+
   const [resumeData, setResumeData] = useState(() => {
   const savedData =
   localStorage.getItem("resumeData");
@@ -21,11 +24,20 @@ if (savedData) {
   const parsed = JSON.parse(savedData);
 
   return {
-    ...parsed,
-    skills: Array.isArray(parsed.skills)
-      ? parsed.skills
-      : []
-  };
+  ...parsed,
+
+  aboutMe: parsed.aboutMe || "",
+
+  languages:
+    parsed.languages || "",
+
+  projects:
+    parsed.projects || [],
+
+  skills: Array.isArray(parsed.skills)
+    ? parsed.skills
+    : [],
+};
 }
 
 return {
@@ -42,9 +54,15 @@ return {
 
         summary: "",
 
+        aboutMe: "",
+
+        languages: "",
+
         experience: [],
 
         education: [],
+
+        projects: [],
 
         achievements: "",
 
@@ -59,15 +77,18 @@ useEffect(() => {
   );
 }, [resumeData]);
 
+
   return (
-    <div className="h-screen w-screen bg-[#F5F7F4] flex flex-col overflow-hidden">
+   <div className="h-screen w-screen bg-[#F5F7F4] flex flex-col overflow-hidden">
 
       <Navbar
-        isPreview={isPreview}
-        setIsPreview={setIsPreview}
-        resumeData={resumeData}
-        setResumeData={setResumeData}
-      />
+  isPreview={isPreview}
+  setIsPreview={setIsPreview}
+  resumeData={resumeData}
+  setResumeData={setResumeData}
+  template={template}
+setTemplate={setTemplate}
+/>
 
       <div className="flex flex-1 overflow-hidden">
 
@@ -80,7 +101,8 @@ useEffect(() => {
             <div className="h-full overflow-y-auto bg-[#F3F4F6] p-4">
 
               <ResumePreview
-                resumeData={resumeData}
+              resumeData={resumeData}
+               template={template}
                 ref={targetRef}
                 id="resume-preview-id"
               />
@@ -89,12 +111,13 @@ useEffect(() => {
 
           ) : (
 
-            <div className="h-full overflow-y-auto bg-white border-r">
+           <div className="h-full overflow-y-auto bg-white border-r">
 
               <ResumeEditor
-                resumeData={resumeData}
-                setResumeData={setResumeData}
-              />
+  resumeData={resumeData}
+  setResumeData={setResumeData}
+  
+/>
 
             </div>
 
@@ -104,11 +127,12 @@ useEffect(() => {
 
         {/* RIGHT SECTION */}
 
-       <div className="flex-[1.4] overflow-y-auto border-l bg-[#FAFAFA]">
+     <div className="flex-[1.4] overflow-y-auto border-l bg-[#FAFAFA]">
 
           <ATSPanel
-            resumeData={resumeData}
-          />
+  resumeData={resumeData}
+  
+/>
 
         </div>
 

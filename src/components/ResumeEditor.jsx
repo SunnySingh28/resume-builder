@@ -1,6 +1,9 @@
 import React from 'react';
 
-function ResumeEditor({ resumeData, setResumeData }) {
+function ResumeEditor({
+ resumeData,
+ setResumeData,
+}) {
   const handlePersonalChange = (e) => {
     setResumeData({
       ...resumeData,
@@ -80,6 +83,40 @@ function ResumeEditor({ resumeData, setResumeData }) {
     ]
   });
 };
+       
+      const handleProjectChange = (
+  id,
+  field,
+  value
+) => {
+  setResumeData({
+    ...resumeData,
+    projects: resumeData.projects.map(
+      (project) =>
+        project.id === id
+          ? {
+              ...project,
+              [field]: value,
+            }
+          : project
+    ),
+  });
+};
+
+const addProject = () => {
+  setResumeData({
+    ...resumeData,
+    projects: [
+      ...(resumeData.projects || []),
+      {
+        id: Date.now(),
+        title: "",
+        techStack: "",
+        description: "",
+      },
+    ],
+  });
+};
 
 const handleSkillChange = (id, value) => {
   setResumeData({
@@ -93,7 +130,7 @@ const handleSkillChange = (id, value) => {
 };
 
   return (
-    <div className="bg-white px-10 py-8 w-full">
+   <div className="bg-white px-10 py-8 w-full">
       {/* Personal Info */}
       <div className="mb-10 text-center">
         <input
@@ -254,6 +291,24 @@ const handleSkillChange = (id, value) => {
           <div className="bg-[#65BA46] text-white rounded-full w-[18px] h-[18px] flex items-center justify-center leading-none text-sm">+</div> Add Education
         </button>
       </div>
+
+       <div className="mb-10">
+  <h2 className="text-2xl font-bold mb-5 text-gray-900 tracking-tight border-b pb-2">
+    About Me
+  </h2>
+
+  <textarea
+    className="w-full border rounded-lg p-3"
+    value={resumeData.aboutMe || ""}
+    onChange={(e) =>
+      handleRootChange(
+        "aboutMe",
+        e.target.value
+      )
+    }
+    placeholder="Tell something about yourself..."
+  />
+</div>
 
       {/* Professional Summary Section */}
       <div className="mb-10">
@@ -476,6 +531,87 @@ const handleSkillChange = (id, value) => {
   >
     + Add Skill
   </button>
+</div>
+      
+        <div className="mb-10">
+  <h2 className="text-2xl font-bold mb-5 text-gray-900 tracking-tight border-b pb-2">
+    Languages
+  </h2>
+
+  <textarea
+    className="w-full border rounded-lg p-3"
+    value={resumeData.languages || ""}
+    onChange={(e) =>
+      handleRootChange(
+        "languages",
+        e.target.value
+      )
+    }
+    placeholder="English, Hindi..."
+  />
+</div>
+      
+      <div className="mb-10">
+
+  <h2 className="text-2xl font-bold mb-5 text-gray-900 tracking-tight border-b pb-2">
+    Projects
+  </h2>
+
+  {(resumeData.projects || []).map(
+    (project) => (
+      <div
+        key={project.id}
+        className="mb-4 border p-4 rounded-lg"
+      >
+        <input
+          value={project.title}
+          onChange={(e) =>
+            handleProjectChange(
+              project.id,
+              "title",
+              e.target.value
+            )
+          }
+          placeholder="Project Title"
+          className="w-full border rounded p-2 mb-2"
+        />
+
+        <input
+          value={project.techStack}
+          onChange={(e) =>
+            handleProjectChange(
+              project.id,
+              "techStack",
+              e.target.value
+            )
+          }
+          placeholder="React, Node.js..."
+          className="w-full border rounded p-2 mb-2"
+        />
+
+        <textarea
+          value={project.description}
+          onChange={(e) =>
+            handleProjectChange(
+              project.id,
+              "description",
+              e.target.value
+            )
+          }
+          placeholder="Project Description"
+          className="w-full border rounded p-2"
+        />
+      </div>
+    )
+  )}
+
+  <button
+    onClick={addProject}
+    className="w-full py-2.5 border border-dashed border-[#65BA46] rounded-xl text-[#65BA46] font-semibold"
+  >
+    + Add Project
+  </button>
+
 </div>
 
       {/* Achievements Section */}

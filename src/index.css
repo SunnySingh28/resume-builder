@@ -7,3 +7,22 @@ body{
   font-family:Inter,sans-serif;
   background:#0f172a;
 }
+
+.resume-page {
+  width: 794px;
+  min-height: 1123px;
+  background: white;
+  margin: 0 auto;
+}
+
+@media print {
+  .resume-page {
+    width: 210mm;
+    min-height: 297mm;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}

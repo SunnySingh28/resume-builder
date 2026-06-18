@@ -8,6 +8,8 @@ function Navbar({
   setIsPreview,
   resumeData,
   setResumeData,
+  template,
+  setTemplate
 }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [aiPrompt, setAiPrompt] = useState("");
@@ -180,6 +182,29 @@ const handleDownload = async () => {
         </div>
 
         <div className="flex items-center gap-5">
+          <select
+  value={template}
+  onChange={(e) =>
+    setTemplate(e.target.value)
+  }
+  className="bg-[#243323] text-white px-4 py-2 rounded-lg outline-none"
+>
+  <option value="professional">
+  Professional
+   </option>
+
+  <option value="modern">
+    Modern
+  </option>
+
+  <option value="classic">
+    Classic
+  </option>
+
+  <option value="minimal">
+    Minimal
+  </option>
+</select>
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium">
               Preview

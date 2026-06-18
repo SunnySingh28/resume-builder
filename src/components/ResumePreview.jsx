@@ -1,4 +1,8 @@
 import React from 'react';
+import ClassicTemplate from "./templates/ClassicTemplate";
+import ModernTemplate from "./templates/ModernTemplate";
+import MinimalTemplate from "./templates/MinimalTemplate";
+import ProfessionalTemplate from "./templates/ProfessionalTemplate";
 import {
 FaEnvelope,
 FaPhoneAlt,
@@ -8,21 +12,51 @@ FaGlobe
 } from 'react-icons/fa';
 
 const ResumePreview = React.forwardRef(
-({ resumeData, id }, ref) => {
+({ resumeData, id, template }, ref) => {
+if (template === "classic") {
+  return (
+    <ClassicTemplate
+      resumeData={resumeData}
+    />
+  );
+}
 
+if (template === "professional") {
+  return (
+    <ProfessionalTemplate
+      resumeData={resumeData}
+    />
+  );
+}
+
+if (template === "minimal") {
+  return (
+    <MinimalTemplate
+      resumeData={resumeData}
+    />
+  );
+}
+if (template === "modern") {
+  return (
+    <ModernTemplate
+      resumeData={resumeData}
+    />
+  );
+}
 return ( <div
   id="resume-preview-id"
   ref={ref}
+  className="resume-page w-full"
   style={{
     background: "#ffffff",
     color: "#111827",
-    width: "100%",
-    maxWidth: "1000px",
+    width: "794px",
     minHeight: "1123px",
+    maxWidth: "794px",
+    margin: "0 auto",
     overflow: "hidden",
     boxSizing: "border-box",
   }}
-  className="w-full"
 >
 
   {/* Header */}
@@ -119,7 +153,7 @@ return ( <div
       {resumeData.skills.map((skill) => (
         <span
           key={skill.id}
-          className="bg-[#65BA46] text-white px-3 py-1 rounded-full text-sm"
+          className="border border-gray-300 text-gray-700 px-3 py-1 rounded-full text-sm bg-white"
         >
           {skill.name}
         </span>
