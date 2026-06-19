@@ -1,5 +1,5 @@
 import { FaArrowRight, FaDownload, FaCamera, FaSpinner } from "react-icons/fa";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
@@ -12,6 +12,9 @@ function Navbar({
   setTemplate
 }) {
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [generatedPdf, setGeneratedPdf] = useState(null);
+  const generatedPdfUrlRef = useRef(null);
   const [aiPrompt, setAiPrompt] = useState("");
 
   const handlePhotoUpload = (e) => {
@@ -35,10 +38,27 @@ function Navbar({
   };
 
 const handleDownload = async () => {
+  setIsDownloading(true);
+  setGeneratedPdf(null);
+
   try {
-    const element = document.getElementById(
+    let element = document.getElementById(
       "resume-preview-id"
     );
+
+    if (!element) {
+      setIsPreview(true);
+
+      await new Promise((resolve) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(resolve);
+        });
+      });
+
+      element = document.getElementById(
+        "resume-preview-id"
+      );
+    }
 
     if (!element) {
       alert("Resume Preview Not Found");
@@ -71,13 +91,65 @@ pdf.addImage(
   1123
 );
 
-    pdf.save(
-      `${resumeData.personal.name || "resume"}.pdf`
+const elementRect =
+  element.getBoundingClientRect();
+
+const scaleX = 794 / elementRect.width;
+const scaleY = 1123 / elementRect.height;
+
+element
+  .querySelectorAll("a[href]")
+  .forEach((link) => {
+    const href = link.getAttribute("href");
+    const rect = link.getBoundingClientRect();
+
+    if (
+      !href ||
+      rect.width <= 0 ||
+      rect.height <= 0
+    ) {
+      return;
+    }
+
+    pdf.link(
+      (rect.left - elementRect.left) * scaleX,
+      (rect.top - elementRect.top) * scaleY,
+      rect.width * scaleX,
+      rect.height * scaleY,
+      { url: href }
     );
+  });
+
+    const fileName =
+      `${resumeData.personal.name || "resume"}.pdf`;
+    const pdfBlob = pdf.output("blob");
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+
+    if (generatedPdfUrlRef.current) {
+      URL.revokeObjectURL(generatedPdfUrlRef.current);
+    }
+
+    generatedPdfUrlRef.current = pdfUrl;
+
+    const downloadLink =
+      document.createElement("a");
+
+    downloadLink.href = pdfUrl;
+    downloadLink.download = fileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    downloadLink.remove();
+
+    setGeneratedPdf({
+      fileName,
+      url: pdfUrl,
+    });
 
   } catch (error) {
     console.error("PDF ERROR:", error);
     alert(error.message);
+  } finally {
+    setIsDownloading(false);
   }
 };
   const handleAiAssist = () => {
@@ -240,10 +312,17 @@ pdf.addImage(
 </button>
           <button
             onClick={handleDownload}
-            className="bg-lime-400 text-black font-bold px-6 py-2 rounded-full flex items-center gap-2 hover:bg-lime-500"
+            disabled={isDownloading}
+            className="bg-lime-400 text-black font-bold px-6 py-2 rounded-full flex items-center gap-2 hover:bg-lime-500 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            <FaDownload />
-            Download CV
+            {isDownloading ? (
+              <FaSpinner className="animate-spin" />
+            ) : (
+              <FaDownload />
+            )}
+            {isDownloading
+              ? "Generating..."
+              : "Download CV"}
           </button>
 
           <label className="cursor-pointer">
@@ -268,6 +347,22 @@ pdf.addImage(
           </label>
         </div>
       </div>
+
+      {generatedPdf && (
+        <div className="bg-lime-100 text-[#162514] px-8 py-3 text-sm flex items-center justify-between gap-4">
+          <span>
+            PDF generated. If this browser blocks downloads, open this app in Chrome/Edge to save it.
+          </span>
+
+          <a
+            href={generatedPdf.url}
+            download={generatedPdf.fileName}
+            className="font-bold underline whitespace-nowrap"
+          >
+            Download Again
+          </a>
+        </div>
+      )}
     </div>
   );
 }

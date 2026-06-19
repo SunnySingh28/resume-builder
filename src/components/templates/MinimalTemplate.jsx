@@ -1,6 +1,9 @@
-import React from "react";
-
 function MinimalTemplate({ resumeData }) {
+  const externalUrl = (url) =>
+    /^https?:\/\//i.test(url)
+      ? url
+      : `https://${url}`;
+
   return (
     <div
       id="resume-preview-id"
@@ -21,19 +24,35 @@ function MinimalTemplate({ resumeData }) {
         <div className="flex justify-center flex-wrap gap-4 text-sm mt-4 text-gray-600">
 
           {resumeData.personal.email && (
-            <span>{resumeData.personal.email}</span>
+            <a href={`mailto:${resumeData.personal.email}`}>
+              {resumeData.personal.email}
+            </a>
           )}
 
           {resumeData.personal.phone && (
-            <span>{resumeData.personal.phone}</span>
+            <a href={`tel:${resumeData.personal.phone}`}>
+              {resumeData.personal.phone}
+            </a>
           )}
 
           {resumeData.personal.linkedin && (
-            <span>LinkedIn</span>
+            <a
+              href={externalUrl(resumeData.personal.linkedin)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
           )}
 
           {resumeData.personal.github && (
-            <span>GitHub</span>
+            <a
+              href={externalUrl(resumeData.personal.github)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
           )}
 
         </div>
@@ -148,9 +167,20 @@ function MinimalTemplate({ resumeData }) {
 
               <div className="flex justify-between">
 
-                <h3 className="font-semibold">
-                  {project.title}
-                </h3>
+                {project.githubLink ? (
+                  <a
+                    href={externalUrl(project.githubLink)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold"
+                  >
+                    {project.title}
+                  </a>
+                ) : (
+                  <h3 className="font-semibold">
+                    {project.title}
+                  </h3>
+                )}
 
                 <span className="text-sm text-gray-500">
                   {project.projectMonth}

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FaEnvelope,
   FaPhoneAlt,
@@ -15,6 +14,11 @@ import {
 function ProfessionalTemplate({
   resumeData,
 }) {
+  const externalUrl = (url) =>
+    /^https?:\/\//i.test(url)
+      ? url
+      : `https://${url}`;
+
   return (
     <div
   id="resume-preview-id"
@@ -34,10 +38,10 @@ function ProfessionalTemplate({
               <img
                 src={resumeData.personal.photo}
                 alt="profile"
-                className="w-45 h-45 rounded-full object-cover border-4 border-white"
+                className="w-36 h-36 rounded-full object-cover border-4 border-white"
               />
             ) : (
-              <div className="w-45 h-45 rounded-full bg-gray-300" />
+              <div className="w-36 h-36 rounded-full bg-gray-300" />
             )}
 
           </div>
@@ -84,7 +88,7 @@ function ProfessionalTemplate({
 
             {resumeData.personal.linkedin && (
   <a
-    href={resumeData.personal.linkedin}
+    href={externalUrl(resumeData.personal.linkedin)}
     target="_blank"
     rel="noopener noreferrer"
     className="flex gap-3 items-center hover:text-blue-700"
@@ -96,7 +100,7 @@ function ProfessionalTemplate({
 
               {resumeData.personal.github && (
   <a
-    href={resumeData.personal.github}
+    href={externalUrl(resumeData.personal.github)}
     target="_blank"
     rel="noopener noreferrer"
     className="flex gap-3 items-center hover:text-blue-700"
@@ -107,7 +111,7 @@ function ProfessionalTemplate({
 )}
             {resumeData.personal.portfolio && (
   <a
-    href={resumeData.personal.portfolio}
+    href={externalUrl(resumeData.personal.portfolio)}
     target="_blank"
     rel="noopener noreferrer"
     className="flex gap-3 items-center hover:text-blue-700"
@@ -118,7 +122,7 @@ function ProfessionalTemplate({
 )}
              {resumeData.personal.leetcode && (
   <a
-    href={resumeData.personal.leetcode}
+    href={externalUrl(resumeData.personal.leetcode)}
     target="_blank"
     rel="noopener noreferrer"
     className="flex gap-3 items-center hover:text-blue-700"
@@ -130,7 +134,7 @@ function ProfessionalTemplate({
 
 {resumeData.personal.codeforces && (
   <a
-    href={resumeData.personal.codeforces}
+    href={externalUrl(resumeData.personal.codeforces)}
     target="_blank"
     rel="noopener noreferrer"
     className="flex gap-3 items-center hover:text-blue-700"
@@ -348,21 +352,27 @@ function ProfessionalTemplate({
                     <div className="flex justify-between items-start">
 
   <div>
-    <a
-  href={project.githubLink}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="
-    text-[24px]
-    font-semibold
-    text-[#5E6E3A]
-    hover:text-blue-600
-    hover:underline
-    cursor-pointer
-  "
->
-  {project.title}
-</a>
+    {project.githubLink ? (
+      <a
+        href={externalUrl(project.githubLink)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="
+          text-[24px]
+          font-semibold
+          text-[#5E6E3A]
+          hover:text-blue-600
+          hover:underline
+          cursor-pointer
+        "
+      >
+        {project.title}
+      </a>
+    ) : (
+      <h3 className="text-[24px] font-semibold text-[#5E6E3A]">
+        {project.title}
+      </h3>
+    )}
 
     <p className="text-sm text-gray-500 italic mb-1">
       {project.techStack}

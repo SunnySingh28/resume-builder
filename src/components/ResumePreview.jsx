@@ -12,7 +12,7 @@ FaGlobe
 } from 'react-icons/fa';
 
 const ResumePreview = React.forwardRef(
-({ resumeData, id, template }, ref) => {
+({ resumeData, template }, ref) => {
 if (template === "classic") {
   return (
     <ClassicTemplate

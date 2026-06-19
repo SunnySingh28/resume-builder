@@ -2,7 +2,7 @@ import Navbar from "./components/Navbar";
 import ResumeEditor from "./components/ResumeEditor";
 import ATSPanel from "./components/ATSPanel";
 import ResumePreview from "./components/ResumePreview";
-import React, {
+import {
   useState,
   useRef,
   useEffect
