@@ -46,32 +46,30 @@ const handleDownload = async () => {
     }
 
     const canvas = await html2canvas(element, {
-      scale: 2,
+      scale: 3,
       useCORS: true,
       backgroundColor: "#ffffff",
       logging: false,
+      width: element.scrollWidth,
+  height: element.scrollHeight,
     });
 
     const imgData = canvas.toDataURL("image/png");
 
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-    });
+   const pdf = new jsPDF({
+  orientation: "portrait",
+  unit: "px",
+  format: [794, 1123],
+});
 
-    const pdfWidth = 210;
-    const pdfHeight =
-      (canvas.height * pdfWidth) / canvas.width;
-
-    pdf.addImage(
-      imgData,
-      "PNG",
-      0,
-      0,
-      pdfWidth,
-      pdfHeight
-    );
+pdf.addImage(
+  imgData,
+  "PNG",
+  0,
+  0,
+  794,
+  1123
+);
 
     pdf.save(
       `${resumeData.personal.name || "resume"}.pdf`

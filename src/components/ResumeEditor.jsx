@@ -176,6 +176,25 @@ const addProject = () => {
     className="text-sm text-green-700 outline-none hover:bg-gray-50 focus:ring-2 focus:ring-green-100 px-3 py-2 rounded-md border border-gray-100 w-full"
     placeholder="Portfolio URL"
   />
+
+<input
+  type="text"
+  name="leetcode"
+  value={resumeData.personal.leetcode || ""}
+  onChange={handlePersonalChange}
+  placeholder="LeetCode URL"
+  className="text-sm outline-none px-3 py-2 rounded-md border border-gray-100 w-full"
+/>
+
+<input
+  type="text"
+  name="codeforces"
+  value={resumeData.personal.codeforces || ""}
+  onChange={handlePersonalChange}
+  placeholder="Codeforces URL "
+  className="text-sm outline-none px-3 py-2 rounded-md border border-gray-100 w-full"
+/>
+
 </div>
       </div>
 

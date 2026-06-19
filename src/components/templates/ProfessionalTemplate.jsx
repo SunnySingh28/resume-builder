@@ -4,7 +4,13 @@ import {
   FaPhoneAlt,
   FaLinkedin,
   FaGithub,
+  FaGlobe
 } from "react-icons/fa";
+
+import {
+  SiLeetcode,
+  SiCodeforces,
+} from "react-icons/si";
 
 function ProfessionalTemplate({
   resumeData,
@@ -12,12 +18,12 @@ function ProfessionalTemplate({
   return (
     <div
   id="resume-preview-id"
-  className="w-[894px] mx-auto bg-white min-h-[1123px] overflow-hidden"
+ className="w-[794px] h-[1123px] mx-auto bg-white overflow-hidden"
 >
       <div className="grid grid-cols-12 h-[1123px]">
 
         {/* LEFT SIDEBAR */}
-<div className="col-span-4 bg-[#D4C0B4] px-3 py-3">
+<div className="col-span-4 bg-[#D4C0B4] px-3 py-6">
         
 
           {/* PHOTO */}
@@ -40,7 +46,7 @@ function ProfessionalTemplate({
 
           {resumeData.aboutMe && (
             <div className="mb-3">
-              <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
+         <h3 className="font-bold text-[22px] mb-2">
                 About Me
               </h3>
 
@@ -54,40 +60,85 @@ function ProfessionalTemplate({
 
           <div className="mb-2">
 
-            <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
+            <h3 className="font-bold text-[22px] mb-2">
               Contact
             </h3>
 
             <div className="space-y-2 text-sm">
 
-              {resumeData.personal.email && (
-                <p className="flex gap-3 items-center">
-                  <FaEnvelope />
-                  {resumeData.personal.email}
-                </p>
-              )}
+              <a
+  href={`mailto:${resumeData.personal.email}`}
+  className="flex gap-3 items-center hover:text-blue-700"
+>
+  <FaEnvelope />
+  {resumeData.personal.email}
+</a>
 
-              {resumeData.personal.phone && (
-                <p className="flex gap-3 items-center">
-                  <FaPhoneAlt />
-                  {resumeData.personal.phone}
-                </p>
-              )}
+             <a
+  href={`tel:${resumeData.personal.phone}`}
+  className="flex gap-3 items-center hover:text-blue-700"
+>
+  <FaPhoneAlt />
+  {resumeData.personal.phone}
+</a>
 
-              {resumeData.personal.linkedin && (
-                <p className="flex gap-3 items-center">
-                  <FaLinkedin />
-                  LinkedIn
-                </p>
-              )}
+            {resumeData.personal.linkedin && (
+  <a
+    href={resumeData.personal.linkedin}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex gap-3 items-center hover:text-blue-700"
+  >
+    <FaLinkedin />
+    LinkedIn
+  </a>
+)}
 
               {resumeData.personal.github && (
-                <p className="flex gap-3 items-center">
-                  <FaGithub />
-                  GitHub
-                </p>
-              )}
+  <a
+    href={resumeData.personal.github}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex gap-3 items-center hover:text-blue-700"
+  >
+    <FaGithub />
+    GitHub
+  </a>
+)}
+            {resumeData.personal.portfolio && (
+  <a
+    href={resumeData.personal.portfolio}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex gap-3 items-center hover:text-blue-700"
+  >
+    <FaGlobe />
+    Portfolio
+  </a>
+)}
+             {resumeData.personal.leetcode && (
+  <a
+    href={resumeData.personal.leetcode}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex gap-3 items-center hover:text-blue-700"
+  >
+    <SiLeetcode />
+    LeetCode
+  </a>
+)}
 
+{resumeData.personal.codeforces && (
+  <a
+    href={resumeData.personal.codeforces}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex gap-3 items-center hover:text-blue-700"
+  >
+    <SiCodeforces />
+    Codeforces
+  </a>
+)}
             </div>
 
           </div>
@@ -97,7 +148,7 @@ function ProfessionalTemplate({
           {resumeData.summary && (
             <div className="mb-3">
 
-              <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
+              <h3 className="font-bold text-[22px] mb-2">
                 Summary
               </h3>
 
@@ -111,9 +162,9 @@ function ProfessionalTemplate({
           {/* EDUCATION */}
 
           {resumeData.education.length > 0 && (
-            <div className="mb-3">
+            <div className="mb-4">
 
-              <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
+              <h3 className="font-bold text-[22px] mb-2">
                 Education
               </h3>
 
@@ -151,9 +202,9 @@ function ProfessionalTemplate({
           {/* SKILLS */}
 
 {resumeData.skills.length > 0 && (
-  <div className="mb-3">
+  <div className="mb-4">
 
-    <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
+    <h3 className="font-bold text-[22px] mb-2">
       Skills
     </h3>
 
@@ -179,13 +230,13 @@ function ProfessionalTemplate({
           {resumeData.languages && (
             <div>
 
-              <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
+              <h3 className="font-bold text-[22px] mb-2">
                 Languages
               </h3>
 
               <p className="text-sm text-gray-800 leading-relaxed">
-  {resumeData.languages}
-</p>
+             {resumeData.languages}
+        </p>
 
             </div>
           )}
@@ -194,14 +245,14 @@ function ProfessionalTemplate({
 
         {/* RIGHT SIDE */}
         
-       <div className="col-span-8 p-8 overflow-hidden">
+       <div className="col-span-8 p-8 h-full overflow-hidden">
 
           <h1
   className="
-    text-[64px]
+    text-[58px]
     leading-[0.9]
-    font-extralight
-    tracking-[0.08em]
+    font-thin
+    tracking-[0.12em]
     uppercase
   "
 >
@@ -220,17 +271,11 @@ function ProfessionalTemplate({
           {/* EXPERIENCE */}
 
           {resumeData.experience.length > 0 && (
-            <div className="mb-">
+            <div className="mb-3">
 
-              <div className="flex items-center gap-6 mb-0">
-
-  <h2 className="text-[38px] font-light">
-    Experience
-  </h2>
-
-  <div className="flex-1 h-[1px] bg-black/60" />
-
-</div>
+              <h2 className="text-[38px] font-light mb-2">
+  Experience
+</h2>
 
               {resumeData.experience.map((exp) => (
                 <div key={exp.id} className="mb-2">
@@ -290,15 +335,9 @@ function ProfessionalTemplate({
           {(resumeData.projects || []).length > 0 && (
             <div className="mb-3">
 
-              <div className="flex items-center gap-6 mb-">
-
-  <h2 className="text-[38px] font-light">
-    Projects
-  </h2>
-
-  <div className="flex-1 h-[1px] bg-black/60" />
-
-</div>
+              <h2 className="text-[38px] font-light mb-2">
+  Projects
+</h2>
 
               {resumeData.projects.map(
                 (project) => (
@@ -316,6 +355,7 @@ function ProfessionalTemplate({
   className="
     text-[24px]
     font-semibold
+    text-[#5E6E3A]
     hover:text-blue-600
     hover:underline
     cursor-pointer
@@ -352,15 +392,9 @@ function ProfessionalTemplate({
           {resumeData.achievements && (
             <div>
 
-              <div className="flex items-center gap-6 mb-">
-
-  <h2 className="text-[38px] font-light">
-    Achievements
-  </h2>
-
-  <div className="flex-1 h-[1px] bg-black/60" />
-
-</div>
+              <h2 className="text-[38px] font-light mb-">
+  Achievements
+</h2>
 
               <ul className="list-disc pl- mt-1">
 
