@@ -1,58 +1,56 @@
-# Resume Builder with ATS Score
+# Resume Builder
 
-A modern Resume Builder built using React, Vite, and Tailwind CSS. Create professional resumes, preview them in real-time, download as PDF, and improve them using an integrated ATS (Applicant Tracking System) scoring system.
+A modern Resume Builder built with React, Vite, Tailwind CSS, html2canvas, and jsPDF.
 
 ## Features
 
-### Resume Builder
+### Resume Creation
 
-* Personal Information Section
+* Personal Information
+* Profile Photo Upload
 * Professional Summary
-* Experience Section
+* About Me Section
+* Education Details
+* Work Experience
+* Projects
+* Skills
+* Languages
+* Achievements
 
-  * Start Month & Year
-  * End Month & Year
-  * Present Checkbox
-* Education Section
+### Multiple Templates
 
-  * Start Year
-  * End Year
-  * Present Checkbox
-* Skills Management
+* Professional Template
+* Modern Template
+* Classic Template
+* Minimal Template
 
-  * Add Skills
-  * Delete Skills
-* Achievements & Awards
+### Professional Template Highlights
 
-### Resume Preview
+* Two-column professional resume layout
+* Profile photo support
+* Clickable links for:
 
-* Real-time Resume Preview
-* Professional Resume Layout
-* Responsive Design
-* PDF Download Support
+  * GitHub
+  * LinkedIn
+  * Portfolio
+  * LeetCode
+  * Codeforces
+  * Project Repository Links
+* Education and Experience timelines
+* Project date support
+* ATS-friendly structure
 
-### ATS Score Analyzer
+### PDF Export
 
-* ATS Score Calculation
-* Resume Strength Detection
-* ATS Suggestions
-* Quantified Achievement Detection
+* One-click PDF download
+* High-quality export using html2canvas and jsPDF
+* Resume preview before download
 
-  * Examples: 40%, 500+, 10 Projects
-* Action Verb Detection
+### Local Storage
 
-  * Developed
-  * Built
-  * Implemented
-  * Designed
-  * Optimized
-  * Managed
-  * Engineered
-
-### Data Persistence
-
-* Auto Save using Local Storage
-* Data remains available after page refresh
+* Auto-save resume data
+* Data persists after page refresh
+* Reset option available
 
 ## Tech Stack
 
@@ -65,66 +63,43 @@ A modern Resume Builder built using React, Vite, and Tailwind CSS. Create profes
 ### Libraries
 
 * React Icons
-* jsPDF
 * html2canvas
-* react-to-print
-
-## Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/SunnySingh28/resume-builder.git
-```
-
-Navigate to project directory:
-
-```bash
-cd resume-builder
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Run development server:
-
-```bash
-npm run dev
-```
-
-Build for production:
-
-```bash
-npm run build
-```
+* jsPDF
 
 ## Project Structure
 
-```text
 src/
 ├── components/
-│   ├── Navbar.jsx
-│   ├── ResumeEditor.jsx
-│   ├── ResumePreview.jsx
-│   └── ATSPanel.jsx
+│ ├── Navbar.jsx
+│ ├── ResumeEditor.jsx
+│ ├── ResumePreview.jsx
+│ ├── ATSPanel.jsx
+│ └── templates/
+│ ├── ProfessionalTemplate.jsx
+│ ├── ModernTemplate.jsx
+│ ├── ClassicTemplate.jsx
+│ └── MinimalTemplate.jsx
 ├── App.jsx
 └── main.jsx
+
+## Installation
+
+```bash
+git clone https://github.com/SunnySingh28/resume-builder.git
+cd resume-builder
+npm install
+npm run dev
 ```
 
 ## Future Improvements
 
-* Multiple Resume Templates
-* ATS Keyword Matching
-* AI Resume Summary Generator
-* Resume Import
-* Drag & Drop Sections
 * Dark Mode
-* Direct PDF Export
+* AI Resume Generation
+* Multi-page PDF Support
+* Custom Theme Colors
+* Drag & Drop Sections
+* Resume Sharing via Link
 
 ## Author
 
 Rajiv Ranjan
-
