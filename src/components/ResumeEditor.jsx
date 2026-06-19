@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 
 function ResumeEditor({
  resumeData,
@@ -71,18 +71,8 @@ function ResumeEditor({
     });
   };
 
-  const addSkill = () => {
-  setResumeData({
-    ...resumeData,
-    skills: [
-      ...resumeData.skills,
-      {
-        id: Date.now(),
-        name: ""
-      }
-    ]
-  });
-};
+const [skillInput, setSkillInput] =
+  useState("");
        
       const handleProjectChange = (
   id,
@@ -113,19 +103,11 @@ const addProject = () => {
         title: "",
         techStack: "",
         description: "",
+        projectMonth: "",
+        projectYear: "",
+        githubLink: ""
       },
     ],
-  });
-};
-
-const handleSkillChange = (id, value) => {
-  setResumeData({
-    ...resumeData,
-    skills: resumeData.skills.map(skill =>
-      skill.id === id
-        ? { ...skill, name: value }
-        : skill
-    )
   });
 };
 
@@ -487,50 +469,85 @@ const handleSkillChange = (id, value) => {
       {/* Skills Section */}
 
        <div className="mb-10">
+
   <h2 className="text-2xl font-bold mb-5 text-gray-900 tracking-tight border-b pb-2">
     Skills
   </h2>
 
-  {(resumeData.skills || []).map((skill) => (
-    <div
-      key={skill.id}
-      className="mb-3 flex gap-2"
-    >
-      <input
-        value={skill.name}
-        onChange={(e) =>
-          handleSkillChange(
-            skill.id,
-            e.target.value
-          )
-        }
-        placeholder="Skill Name"
-        className="w-full border rounded-lg px-3 py-2"
-      />
+  <input
+    type="text"
+    value={skillInput}
+    onChange={(e) =>
+      setSkillInput(e.target.value)
+    }
+    onKeyDown={(e) => {
 
-      <button
-        onClick={() =>
-          setResumeData({
-            ...resumeData,
-            skills:
-              resumeData.skills.filter(
-                s => s.id !== skill.id
-              )
-          })
-        }
-        className="text-red-500"
-      >
-        Delete
-      </button>
-    </div>
-  ))}
+      if (
+        e.key === "Enter" &&
+        skillInput.trim()
+      ) {
 
-  <button
-    onClick={addSkill}
-    className="w-full py-2.5 border border-dashed border-[#65BA46] rounded-xl text-[#65BA46] font-semibold"
-  >
-    + Add Skill
-  </button>
+        e.preventDefault();
+
+        setResumeData({
+          ...resumeData,
+          skills: [
+            ...resumeData.skills,
+            {
+              id: Date.now(),
+              name: skillInput.trim(),
+            },
+          ],
+        });
+
+        setSkillInput("");
+      }
+    }}
+    placeholder="Type skill and press Enter"
+    className="w-full border rounded-lg px-3 py-2 mb-4"
+  />
+
+  <div className="flex flex-wrap gap-2">
+
+    {(resumeData.skills || []).map(
+      (skill) => (
+        <div
+          key={skill.id}
+          className="
+            flex
+            items-center
+            gap-2
+            bg-green-100
+            text-green-800
+            px-3
+            py-1
+            rounded-full
+          "
+        >
+          {skill.name}
+
+          <button
+            onClick={() =>
+              setResumeData({
+                ...resumeData,
+                skills:
+                  resumeData.skills.filter(
+                    (s) =>
+                      s.id !== skill.id
+                  ),
+              })
+            }
+            className="font-bold"
+          >
+            ×
+          </button>
+
+        </div>
+      )
+    )}
+
+  </div>
+
 </div>
       
         <div className="mb-10">
@@ -560,21 +577,59 @@ const handleSkillChange = (id, value) => {
   {(resumeData.projects || []).map(
     (project) => (
       <div
-        key={project.id}
-        className="mb-4 border p-4 rounded-lg"
-      >
-        <input
-          value={project.title}
-          onChange={(e) =>
-            handleProjectChange(
-              project.id,
-              "title",
-              e.target.value
-            )
-          }
-          placeholder="Project Title"
-          className="w-full border rounded p-2 mb-2"
-        />
+  key={project.id}
+  className="mb-4 relative group border p-4 rounded-lg"
+>
+       <div className="flex justify-between items-center mb-2">
+
+  <input
+    value={project.title}
+    onChange={(e) =>
+      handleProjectChange(
+        project.id,
+        "title",
+        e.target.value
+      )
+    }
+    placeholder="Project Title"
+    className="flex-1 border rounded p-2"
+  />
+
+  <button
+    onClick={() =>
+      setResumeData({
+        ...resumeData,
+        projects: resumeData.projects.filter(
+          p => p.id !== project.id
+        )
+      })
+    }
+    className="
+      ml-3
+      text-red-500
+      text-xs
+      font-semibold
+      hover:text-red-700
+    "
+  >
+    Delete
+  </button>
+
+</div>
+
+<input
+  type="text"
+  value={project.githubLink || ""}
+  onChange={(e) =>
+    handleProjectChange(
+      project.id,
+      "githubLink",
+      e.target.value
+    )
+  }
+  placeholder="GitHub Repository Link"
+  className="w-full border rounded-lg px-3 py-2 mb-2"
+/>
 
         <input
           value={project.techStack}
@@ -601,6 +656,46 @@ const handleSkillChange = (id, value) => {
           placeholder="Project Description"
           className="w-full border rounded p-2"
         />
+
+        <select
+  value={project.projectMonth}
+  onChange={(e) =>
+    handleProjectChange(
+      project.id,
+      "projectMonth",
+      e.target.value
+    )
+  }
+  className="border rounded-md px-2 py-1"
+>
+  <option value="">Month</option>
+  <option>Jan</option>
+  <option>Feb</option>
+  <option>Mar</option>
+  <option>Apr</option>
+  <option>May</option>
+  <option>Jun</option>
+  <option>Jul</option>
+  <option>Aug</option>
+  <option>Sep</option>
+  <option>Oct</option>
+  <option>Nov</option>
+  <option>Dec</option>
+</select>
+
+<input
+  type="number"
+  placeholder="Year"
+  value={project.projectYear}
+  onChange={(e) =>
+    handleProjectChange(
+      project.id,
+      "projectYear",
+      e.target.value
+    )
+  }
+  className="border rounded-md px-2 py-1 w-[120px]"
+/>
       </div>
     )
   )}

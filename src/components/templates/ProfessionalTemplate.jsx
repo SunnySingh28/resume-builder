@@ -12,26 +12,26 @@ function ProfessionalTemplate({
   return (
     <div
   id="resume-preview-id"
-  className="w-[794px] mx-auto bg-white min-h-[1123px] overflow-hidden"
+  className="w-[894px] mx-auto bg-white min-h-[1123px] overflow-hidden"
 >
       <div className="grid grid-cols-12 h-[1123px]">
 
         {/* LEFT SIDEBAR */}
-<div className="col-span-4 bg-[#D4C0B4] px-6 py-8">
+<div className="col-span-4 bg-[#D4C0B4] px-3 py-3">
         
 
           {/* PHOTO */}
 
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-4">
 
             {resumeData.personal.photo ? (
               <img
                 src={resumeData.personal.photo}
                 alt="profile"
-                className="w-40 h-40 rounded-full object-cover border-4 border-white"
+                className="w-45 h-45 rounded-full object-cover border-4 border-white"
               />
             ) : (
-              <div className="w-40 h-40 rounded-full bg-gray-300" />
+              <div className="w-45 h-45 rounded-full bg-gray-300" />
             )}
 
           </div>
@@ -39,12 +39,12 @@ function ProfessionalTemplate({
           {/* ABOUT ME */}
 
           {resumeData.aboutMe && (
-            <div className="mb-4">
-              <h3 className="font-bold text-[22px] border-b border-gray-400 pb-2 mb-3">
+            <div className="mb-3">
+              <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
                 About Me
               </h3>
 
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-gray-900">
                 {resumeData.aboutMe}
               </p>
             </div>
@@ -52,37 +52,37 @@ function ProfessionalTemplate({
 
           {/* CONTACT */}
 
-          <div className="mb-4">
+          <div className="mb-2">
 
-            <h3 className="font-bold text-[22px] border-b border-gray-400 pb-2 mb-3">
+            <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
               Contact
             </h3>
 
             <div className="space-y-2 text-sm">
 
               {resumeData.personal.email && (
-                <p className="flex gap-2 items-center">
+                <p className="flex gap-3 items-center">
                   <FaEnvelope />
                   {resumeData.personal.email}
                 </p>
               )}
 
               {resumeData.personal.phone && (
-                <p className="flex gap-2 items-center">
+                <p className="flex gap-3 items-center">
                   <FaPhoneAlt />
                   {resumeData.personal.phone}
                 </p>
               )}
 
               {resumeData.personal.linkedin && (
-                <p className="flex gap-2 items-center">
+                <p className="flex gap-3 items-center">
                   <FaLinkedin />
                   LinkedIn
                 </p>
               )}
 
               {resumeData.personal.github && (
-                <p className="flex gap-2 items-center">
+                <p className="flex gap-3 items-center">
                   <FaGithub />
                   GitHub
                 </p>
@@ -95,9 +95,9 @@ function ProfessionalTemplate({
           {/* SUMMARY */}
 
           {resumeData.summary && (
-            <div className="mb-4">
+            <div className="mb-3">
 
-              <h3 className="font-bold text-[22px] border-b border-gray-400 pb-2 mb-3">
+              <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
                 Summary
               </h3>
 
@@ -113,27 +113,33 @@ function ProfessionalTemplate({
           {resumeData.education.length > 0 && (
             <div className="mb-3">
 
-              <h3 className="font-bold text-[22px] border-b border-gray-400 pb-2 mb-3">
+              <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
                 Education
               </h3>
 
               {resumeData.education.map((edu) => (
-                <div key={edu.id} className="mb-3">
+                <div key={edu.id} className="mb-2">
 
-                  <h4 className="font-semibold">
-                    {edu.degree}
-                  </h4>
+               <div className="flex justify-between">
 
-                 <p className="text-sm">
+  <h4 className="font-semibold">
+    {edu.degree}
+  </h4>
+
+  <span className="text-xs font-semibold text-black">
+
+    {edu.startYear}
+    {" - "}
+    {edu.current
+      ? "Present"
+      : edu.endYear}
+
+  </span>
+
+</div>
+
+<p className="text-sm">
   {edu.school}
-</p>
-
-<p className="text-xs text-gray-600">
-  {edu.startYear}
-  {" - "}
-  {edu.current
-    ? "Present"
-    : edu.endYear}
 </p>
 
                 </div>
@@ -145,24 +151,25 @@ function ProfessionalTemplate({
           {/* SKILLS */}
 
 {resumeData.skills.length > 0 && (
-  <div className="mb-4">
+  <div className="mb-3">
 
-    <h3 className="font-bold text-[22px] border-b border-gray-400 pb-2 mb-3">
+    <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
       Skills
     </h3>
 
-    <div className="flex flex-wrap gap-2">
+   <div className="text-sm text-black leading-relaxed">
 
-      {resumeData.skills.map((skill) => (
-        <span
-          key={skill.id}
-          className="border border-gray-300 bg-white text-gray-700 px-2 py-1 rounded-md text-xs"
-        >
-          {skill.name}
-        </span>
-      ))}
+  {resumeData.skills.map((skill, index) => (
+    <span key={skill.id}>
+      {skill.name}
 
-    </div>
+      {index !==
+        resumeData.skills.length - 1 &&
+        ", "}
+    </span>
+  ))}
+
+</div>
 
   </div>
 )}
@@ -172,11 +179,11 @@ function ProfessionalTemplate({
           {resumeData.languages && (
             <div>
 
-              <h3 className="font-bold text-[22px] border-b border-gray-400 pb-2 mb-3">
+              <h3 className="font-bold text-[22px] border-b border-gray-400 pb- mb-2">
                 Languages
               </h3>
 
-              <p className="text-sm text-gray-700 leading-relaxed">
+              <p className="text-sm text-gray-800 leading-relaxed">
   {resumeData.languages}
 </p>
 
@@ -189,67 +196,74 @@ function ProfessionalTemplate({
         
        <div className="col-span-8 p-8 overflow-hidden">
 
-          <h1 className="text-[48px] leading-[0.85] font-light uppercase">
+          <h1
+  className="
+    text-[64px]
+    leading-[0.9]
+    font-extralight
+    tracking-[0.08em]
+    uppercase
+  "
+>
   {resumeData.personal.name
-    .split(" ")
-    .map((word, index) => (
+  .trim()
+  .split(" ")
+  .map((word, index) => (
       <div key={index}>{word}</div>
     ))}
 </h1>
 
-          <p className="text-[28px] font-semibold text-black mt-0 mb-3">
+          <p className="text-[32px] font-bold text-black mt-0 mb-3">
             {resumeData.personal.title}
           </p>
 
           {/* EXPERIENCE */}
 
           {resumeData.experience.length > 0 && (
-            <div className="mb-1">
+            <div className="mb-">
 
               <div className="flex items-center gap-6 mb-0">
 
-  <h2 className="text-[40px] font-light">
+  <h2 className="text-[38px] font-light">
     Experience
   </h2>
 
-  <div className="flex-1 h-[2px] bg-gray-400" />
+  <div className="flex-1 h-[1px] bg-black/60" />
 
 </div>
 
               {resumeData.experience.map((exp) => (
                 <div key={exp.id} className="mb-2">
 
-                 <div className="flex justify-between">
+                <div className="flex justify-between">
 
   <div>
 
-    <h3 className="text-[28px] font-semibold">
+    <h3 className="text-[22px] font-semibold">
       {exp.title}
     </h3>
 
-    <p className="text-[18px] font-italic">
+    <p className="text-[18px] font-medium">
       {exp.company}
     </p>
 
-    <p className="text-sm text-black-500">
+  </div>
+
+  <div className="text-right">
+
+    <p className="text-[16px] font-semibold text-black">
+      {exp.startMonth} {exp.startYear}
+      {" - "}
+      {exp.current
+        ? "Present"
+        : `${exp.endMonth} ${exp.endYear}`}
+    </p>
+
+    <p className="text-[14px] text-gray-700">
       {exp.location}
     </p>
 
   </div>
-          
-  <span className="text- font-medium text-gray-700">
-
-    {exp.startMonth}
-    {" "}
-    {exp.startYear}
-
-    {" - "}
-
-    {exp.current
-      ? "Present"
-      : `${exp.endMonth} ${exp.endYear}`}
-
-  </span>
 
 </div>
 
@@ -276,13 +290,13 @@ function ProfessionalTemplate({
           {(resumeData.projects || []).length > 0 && (
             <div className="mb-3">
 
-              <div className="flex items-center gap-6 mb-2">
+              <div className="flex items-center gap-6 mb-">
 
-  <h2 className="text-[40px] font-light">
+  <h2 className="text-[38px] font-light">
     Projects
   </h2>
 
-  <div className="flex-1 h-[2px] bg-gray-400" />
+  <div className="flex-1 h-[1px] bg-black/60" />
 
 </div>
 
@@ -292,13 +306,36 @@ function ProfessionalTemplate({
                     key={project.id}
                     className="mb-3"
                   >
-                    <h3 className="text-[24px] font-semibold">
-                      {project.title}
-                    </h3>
+                    <div className="flex justify-between items-start">
 
-                    <p className="text-sm text-gray-500 italic mb-1">
-                      {project.techStack}
-                    </p>
+  <div>
+    <a
+  href={project.githubLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="
+    text-[24px]
+    font-semibold
+    hover:text-blue-600
+    hover:underline
+    cursor-pointer
+  "
+>
+  {project.title}
+</a>
+
+    <p className="text-sm text-gray-500 italic mb-1">
+      {project.techStack}
+    </p>
+  </div>
+
+  <span className="text-[16px] font-semibold text-black">
+    {project.projectMonth}
+    {" "}
+    {project.projectYear}
+  </span>
+
+</div>
 
                     <p>
                       {project.description}
@@ -315,17 +352,17 @@ function ProfessionalTemplate({
           {resumeData.achievements && (
             <div>
 
-              <div className="flex items-center gap-6 mb-5">
+              <div className="flex items-center gap-6 mb-">
 
-  <h2 className="text-[40px] font-light">
+  <h2 className="text-[38px] font-light">
     Achievements
   </h2>
 
-  <div className="flex-1 h-[2px] bg-gray-400" />
+  <div className="flex-1 h-[1px] bg-black/60" />
 
 </div>
 
-              <ul className="list-disc pl-4 mt-1">
+              <ul className="list-disc pl- mt-1">
 
                 {resumeData.achievements
                   .split("\n")
