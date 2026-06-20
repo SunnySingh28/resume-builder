@@ -2,6 +2,7 @@ import { FaArrowRight, FaDownload, FaCamera, FaSpinner } from "react-icons/fa";
 import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
+import { generateResume } from "../services/aiService";
 
 function Navbar({
   isPreview,
@@ -152,66 +153,25 @@ element
     setIsDownloading(false);
   }
 };
-  const handleAiAssist = () => {
-    if (!aiPrompt.trim()) return;
-
+  const handleAiAssist = async () => {
+  try {
     setIsGenerating(true);
 
-    setTimeout(() => {
-      setResumeData({
-        ...resumeData,
+    const data = await generateResume(
+      aiPrompt
+    );
 
-        personal: {
-          ...resumeData.personal,
-          name: "Alex Developer",
-          title: "Full Stack Engineer",
-          email: "alex@example.com",
-          phone: "+91 9876543210",
-          linkedin: "https://linkedin.com/in/alex",
-          github: "https://github.com/alex",
-          portfolio: "https://alex.dev",
-        },
+    console.log(data);
 
-        summary:
-          "Passionate Software Engineer with 4+ years of experience building scalable web applications and APIs.",
+    alert(data.message);
 
-        education: [
-          {
-            id: 1,
-            degree: "B.Tech Computer Science",
-            school: "IIITM Gwalior",
-            year: "2022 - 2026",
-            achievements: "CGPA 8.5/10",
-          },
-        ],
-
-        experience: [
-          {
-            id: 1,
-            title: "Software Engineer",
-            company: "Tech Solutions Inc.",
-            location: "Bangalore, India",
-            date: "2024 - Present",
-            bullets:
-              "Developed scalable REST APIs\nImproved performance by 40%\nWorked with React and Node.js",
-          },
-        ],
-
-        skills: {
-          industry:
-            "Software Engineering, System Design, Web Development",
-          tools:
-            "React, Node.js, Express, MongoDB, MySQL, Git, Docker",
-        },
-
-        achievements:
-          "Solved 500+ DSA problems\nBuilt 10+ full-stack projects",
-      });
-
-      setAiPrompt("");
-      setIsGenerating(false);
-    }, 1200);
-  };
+  } catch (error) {
+    console.error(error);
+    alert("AI request failed");
+  } finally {
+    setIsGenerating(false);
+  }
+};
 
   return (
     <div className="bg-[#162514] text-white shadow-lg">
