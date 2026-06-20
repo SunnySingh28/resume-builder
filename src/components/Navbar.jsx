@@ -274,6 +274,11 @@ element
   <option value="minimal">
     Minimal
   </option>
+
+<option value="latex">
+  LaTeX
+</option>
+
 </select>
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium">

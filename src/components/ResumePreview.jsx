@@ -3,6 +3,7 @@ import ClassicTemplate from "./templates/ClassicTemplate";
 import ModernTemplate from "./templates/ModernTemplate";
 import MinimalTemplate from "./templates/MinimalTemplate";
 import ProfessionalTemplate from "./templates/ProfessionalTemplate";
+import LatexTemplate from "./templates/LatexTemplate";
 import {
 FaEnvelope,
 FaPhoneAlt,
@@ -43,6 +44,15 @@ if (template === "modern") {
     />
   );
 }
+
+if (template === "latex") {
+  return (
+    <LatexTemplate
+      resumeData={resumeData}
+    />
+  );
+}
+
 return ( <div
   id="resume-preview-id"
   ref={ref}
