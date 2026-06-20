@@ -1,4 +1,16 @@
 function ClassicTemplate({ resumeData }) {
+
+const SectionTitle = ({ title }) => (
+  <div className="bg-[#dbe2ee] text-center py-1 my-4">
+    <h2
+      className="font-bold text-[18px]"
+      style={{ letterSpacing: "6px" }}
+    >
+      {title}
+    </h2>
+  </div>
+);
+
   const externalUrl = (url) =>
     /^https?:\/\//i.test(url)
       ? url
@@ -6,99 +18,137 @@ function ClassicTemplate({ resumeData }) {
 
   return (
     <div
-      id="resume-preview-id"
-      className="bg-white max-w-[1000px] mx-auto p-10 text-black"
-    >
+  id="resume-preview-id"
+  className="bg-white w-[794px] min-h-[1123px] mx-auto px-14 py-10 text-black shadow-xl"
+  style={{
+    fontFamily: "Times New Roman, serif",
+  }}
+>
       {/* HEADER */}
 
-      <div className="text-center border-b pb-4 mb-6">
+      <div className="text-center mb-6">
 
-        <h1 className="text-4xl font-bold uppercase">
-          {resumeData.personal.name}
-        </h1>
+  <h1 className="text-5xl font-bold">
+    {resumeData.personal.name}
+  </h1>
 
-        <p className="text-lg mt-2">
-          {resumeData.personal.title}
-        </p>
+ <div className="mt-2 text-sm flex justify-center flex-wrap gap-2">
 
-        <div className="flex justify-center flex-wrap gap-4 text-sm mt-3">
+  {resumeData.personal.phone && (
+    <>
+      <b>Phone:</b>
+      <a href={`tel:${resumeData.personal.phone}`}>
+        {resumeData.personal.phone}
+      </a>
+    </>
+  )}
 
-          {resumeData.personal.email && (
-            <a href={`mailto:${resumeData.personal.email}`}>
-              {resumeData.personal.email}
-            </a>
-          )}
+  |
 
-          {resumeData.personal.phone && (
-            <a href={`tel:${resumeData.personal.phone}`}>
-              {resumeData.personal.phone}
-            </a>
-          )}
+  {resumeData.personal.email && (
+    <>
+      <b>Email:</b>
+      <a href={`mailto:${resumeData.personal.email}`}>
+        {resumeData.personal.email}
+      </a>
+    </>
+  )}
 
-          {resumeData.personal.linkedin && (
-            <a
-              href={externalUrl(resumeData.personal.linkedin)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn
-            </a>
-          )}
+  |
 
-          {resumeData.personal.github && (
-            <a
-              href={externalUrl(resumeData.personal.github)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub
-            </a>
-          )}
+  {resumeData.personal.linkedin && (
+    <a
+      href={externalUrl(resumeData.personal.linkedin)}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      LinkedIn
+    </a>
+  )}
 
-        </div>
+  |
 
-      </div>
+  {resumeData.personal.github && (
+    <a
+      href={externalUrl(resumeData.personal.github)}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      GitHub
+    </a>
+  )}
+
+</div>
+</div>
 
       {/* SUMMARY */}
 
       {resumeData.summary && (
         <section className="mb-5">
 
-          <h2 className="font-bold text-xl border-b mb-2">
-            PROFESSIONAL SUMMARY
-          </h2>
+          <SectionTitle title="SUMMARY" />
 
-          <p>{resumeData.summary}</p>
+        <p className="text-[15px] leading-6">
+  {resumeData.summary}
+</p>
 
         </section>
       )}
 
-      {/* SKILLS */}
+      
+      {/* EDUCATION */}
 
-      {resumeData.skills.length > 0 && (
+      {resumeData.education.length > 0 && (
         <section className="mb-5">
 
-          <h2 className="font-bold text-xl border-b mb-2">
-            SKILLS
-          </h2>
+         <SectionTitle title="EDUCATION" />
 
-          <p>
-            {resumeData.skills
-              .map(skill => skill.name)
-              .join(", ")}
-          </p>
+          {resumeData.education.map(edu => (
+  <div key={edu.id} className="mb-4">
+
+    <div className="flex justify-between">
+
+      <div>
+        <h3 className="font-bold">
+          {edu.school}
+        </h3>
+
+        <p>
+          {edu.degree}
+        </p>
+      </div>
+
+      <div className="text-right">
+
+        <p className="font-bold">
+          {edu.location}
+        </p>
+
+        <p className="text-sm">
+          {edu.startYear}
+          {" - "}
+          {edu.current
+            ? "Present"
+            : edu.endYear}
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+))}
 
         </section>
       )}
+
 
       {/* EXPERIENCE */}
 
       {resumeData.experience.length > 0 && (
         <section className="mb-5">
 
-          <h2 className="font-bold text-xl border-b mb-2">
-            EXPERIENCE
-          </h2>
+          <SectionTitle title="EXPERIENCE" />
 
           {resumeData.experience.map(exp => (
             <div
@@ -108,28 +158,37 @@ function ClassicTemplate({ resumeData }) {
               <div className="flex justify-between">
 
                 <div>
-                  <h3 className="font-bold">
-                    {exp.title}
-                  </h3>
+                  <div>
+  <h3 className="font-bold">
+    {exp.company}
+  </h3>
 
-                  <p>
-                    {exp.company}
-                  </p>
+  <p>
+    {exp.title}
+  </p>
+</div>
                 </div>
 
-                <span className="text-sm">
-                  {exp.startMonth} {exp.startYear}
-                  {" - "}
-                  {exp.current
-                    ? "Present"
-                    : `${exp.endMonth} ${exp.endYear}`}
-                </span>
+               <div className="text-right">
+
+  
+
+  <p className="text-sm">
+    {exp.startMonth} {exp.startYear}
+    {" - "}
+    {exp.current
+      ? "Present"
+      : `${exp.endMonth} ${exp.endYear}`}
+  </p>
+
+  <p className="text-sm">
+    {exp.location}
+  </p>
+
+</div>
 
               </div>
 
-              <p className="text-sm text-gray-600">
-                {exp.location}
-              </p>
 
               <ul className="list-disc pl-5 mt-1">
 
@@ -150,14 +209,28 @@ function ClassicTemplate({ resumeData }) {
         </section>
       )}
 
+     {/* SKILLS */}
+
+      {resumeData.skills.length > 0 && (
+        <section className="mb-5">
+
+          <SectionTitle title="SKILLS" />
+
+         <p className="text-[15px] leading-6">
+  {resumeData.skills
+    .map(skill => skill.name || skill)
+    .join(", ")}
+</p>
+
+        </section>
+      )}
+
       {/* PROJECTS */}
 
       {(resumeData.projects || []).length > 0 && (
         <section className="mb-5">
 
-          <h2 className="font-bold text-xl border-b mb-2">
-            PROJECTS
-          </h2>
+        <SectionTitle title="PROJECTS" />
 
           {resumeData.projects.map(project => (
             <div
@@ -171,7 +244,7 @@ function ClassicTemplate({ resumeData }) {
                     href={externalUrl(project.githubLink)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-bold"
+                    className="font-bold text-blue-700 hover:underline"
                   >
                     {project.title}
                   </a>
@@ -193,47 +266,18 @@ function ClassicTemplate({ resumeData }) {
                 {project.techStack}
               </p>
 
-              <p>
-                {project.description}
-              </p>
+              <ul className="list-disc pl-5 mt-1">
 
-            </div>
-          ))}
+  {(project.description || "")
+    .split("\n")
+    .filter(item => item.trim())
+    .map((item,index)=>(
+      <li key={index}>
+        {item}
+      </li>
+    ))}
 
-        </section>
-      )}
-
-      {/* EDUCATION */}
-
-      {resumeData.education.length > 0 && (
-        <section className="mb-5">
-
-          <h2 className="font-bold text-xl border-b mb-2">
-            EDUCATION
-          </h2>
-
-          {resumeData.education.map(edu => (
-            <div
-              key={edu.id}
-              className="mb-3"
-            >
-              <div className="flex justify-between">
-
-                <h3 className="font-bold">
-                  {edu.degree}
-                </h3>
-
-                <span className="text-sm">
-                  {edu.startYear}
-                  {" - "}
-                  {edu.current
-                    ? "Present"
-                    : edu.endYear}
-                </span>
-
-              </div>
-
-              <p>{edu.school}</p>
+</ul>
 
             </div>
           ))}
@@ -246,9 +290,7 @@ function ClassicTemplate({ resumeData }) {
       {resumeData.achievements && (
         <section>
 
-          <h2 className="font-bold text-xl border-b mb-2">
-            ACHIEVEMENTS
-          </h2>
+         <SectionTitle title="ACHIEVEMENTS" />
 
           <ul className="list-disc pl-5">
 
