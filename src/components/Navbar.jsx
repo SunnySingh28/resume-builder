@@ -271,10 +271,6 @@ element
     Classic
   </option>
 
-  <option value="minimal">
-    Minimal
-  </option>
-
 <option value="latex">
   LaTeX
 </option>

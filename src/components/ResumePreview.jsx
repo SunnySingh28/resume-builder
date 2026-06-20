@@ -1,7 +1,6 @@
 import React from 'react';
 import ClassicTemplate from "./templates/ClassicTemplate";
 import ModernTemplate from "./templates/ModernTemplate";
-import MinimalTemplate from "./templates/MinimalTemplate";
 import ProfessionalTemplate from "./templates/ProfessionalTemplate";
 import LatexTemplate from "./templates/LatexTemplate";
 import {
@@ -30,13 +29,6 @@ if (template === "professional") {
   );
 }
 
-if (template === "minimal") {
-  return (
-    <MinimalTemplate
-      resumeData={resumeData}
-    />
-  );
-}
 if (template === "modern") {
   return (
     <ModernTemplate

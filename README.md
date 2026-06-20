@@ -22,7 +22,6 @@ A modern and ATS-friendly Resume Builder built with React, Vite, Tailwind CSS, h
 * Professional Template
 * Modern Template
 * Classic Template
-* Minimal Template
 * LaTeX Resume Template
 
 ### Template Highlights
