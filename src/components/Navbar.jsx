@@ -2,7 +2,10 @@ import { FaArrowRight, FaDownload, FaCamera, FaSpinner } from "react-icons/fa";
 import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import { generateResume } from "../services/aiService";
+import {
+  generateResume,
+  importResume,
+} from "../services/aiService";
 
 function Navbar({
   isPreview,
@@ -17,6 +20,7 @@ function Navbar({
   const [generatedPdf, setGeneratedPdf] = useState(null);
   const generatedPdfUrlRef = useRef(null);
   const [aiPrompt, setAiPrompt] = useState("");
+  const fileInputRef = useRef(null);
 
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
@@ -153,17 +157,196 @@ element
     setIsDownloading(false);
   }
 };
+
+const handleResumeImport = async (e) => {
+  console.log("IMPORT CLICKED");
+  try {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+   const response = await importResume(file);
+
+const ai = response.data;
+
+setResumeData((prev) => ({
+  ...prev,
+
+  personal: {
+    ...prev.personal,
+    ...ai.personal,
+  },
+
+  summary: ai.summary || "",
+
+  aboutMe: ai.aboutMe || "",
+
+  languages: ai.languages || "",
+
+  skills: Array.isArray(ai.skills)
+    ? ai.skills.map((skill, index) => ({
+        id: Date.now() + index,
+        name: skill,
+      }))
+    : [],
+
+  achievements: Array.isArray(ai.achievements)
+    ? ai.achievements.join("\n")
+    : ai.achievements || "",
+
+  education: Array.isArray(ai.education)
+    ? ai.education.map((edu, index) => ({
+        id: Date.now() + index,
+        degree: edu.degree || "",
+        school: edu.school || "",
+        location: edu.location || "",
+        startYear: edu.startYear || "",
+        endYear: edu.endYear || "",
+        current: edu.current || false,
+      }))
+    : [],
+
+  experience: Array.isArray(ai.experience)
+    ? ai.experience.map((exp, index) => ({
+        id: Date.now() + index,
+        title: exp.title || "",
+        company: exp.company || "",
+        location: exp.location || "",
+        startMonth: exp.startMonth || "",
+        startYear: exp.startYear || "",
+        endMonth: exp.endMonth || "",
+        endYear: exp.endYear || "",
+        current: exp.current || false,
+        bullets: Array.isArray(exp.bullets)
+          ? exp.bullets.join("\n")
+          : exp.bullets || "",
+      }))
+    : [],
+
+  projects: Array.isArray(ai.projects)
+    ? ai.projects.map((project, index) => ({
+        id: Date.now() + index,
+        title: project.name || project.title || "",
+        techStack: Array.isArray(project.technologies)
+          ? project.technologies.join(", ")
+          : project.techStack || "",
+        description: project.description || "",
+        githubLink: project.githubLink || "",
+        projectMonth: project.projectMonth || "",
+        projectYear: project.projectYear || "",
+      }))
+    : [],
+}));
+
+alert("Resume Imported Successfully");
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Resume Import Failed");
+
+  }
+};
+
   const handleAiAssist = async () => {
   try {
     setIsGenerating(true);
 
-    const data = await generateResume(
-      aiPrompt
-    );
+    const response = await generateResume(aiPrompt);
 
-    console.log(data);
+    console.log(response);
 
-    alert(data.message);
+    const ai = response.data;
+
+    setResumeData((prev) => ({
+      ...prev,
+
+      personal: {
+        ...prev.personal,
+        name: ai.personal?.name || "",
+        title: ai.personal?.title || "",
+      },
+
+      summary: ai.summary || "",
+
+      aboutMe: ai.aboutMe || "",
+
+      languages: ai.languages || "",
+
+      skills: Array.isArray(ai.skills)
+        ? ai.skills.map((skill, index) => ({
+            id: Date.now() + index,
+            name: skill,
+          }))
+        : [],
+
+      achievements: Array.isArray(ai.achievements)
+        ? ai.achievements.join("\n")
+        : "",
+
+      education: Array.isArray(ai.education)
+        ? ai.education.map((edu, index) => ({
+            id: Date.now() + index,
+            degree: edu.degree || "",
+            school: edu.school || "",
+            location: edu.location || "",
+            startYear: edu.startYear || "",
+            endYear: edu.endYear || "",
+           current: edu.current || false,
+
+description:
+edu.description || "",
+          }))
+        : [],
+
+      experience: Array.isArray(ai.experience)
+        ? ai.experience.map((exp, index) => ({
+            id: Date.now() + index,
+            title: exp.title || "",
+            company: exp.company || "",
+            location: exp.location || "",
+            startMonth: exp.startMonth || "",
+            startYear: exp.startYear || "",
+            endMonth: exp.endMonth || "",
+            endYear: exp.endYear || "",
+            current: exp.current || false,
+
+            technologies:
+Array.isArray(exp.technologies)
+? exp.technologies.join(", ")
+: "",
+
+bullets:
+Array.isArray(exp.bullets)
+? exp.bullets.join("\n")
+: exp.bullets || ""
+          }))
+        : [],
+
+      projects: Array.isArray(ai.projects)
+        ? ai.projects.map((project, index) => ({
+            id: Date.now() + index,
+
+            title: project.name || "",
+
+          techStack:
+Array.isArray(project.technologies)
+? project.technologies.join(", ")
+: project.techStack || "",
+
+            description: project.description || "",
+
+            githubLink: "",
+
+            projectMonth: "",
+
+            projectYear: "",
+          }))
+        : [],
+    }));
+
+    alert("✅ Resume Generated Successfully!");
 
   } catch (error) {
     console.error(error);
@@ -271,6 +454,25 @@ element
 >
   Reset
 </button>
+
+<button
+  onClick={() => {
+    console.log("BUTTON CLICK");
+    fileInputRef.current.click();
+  }}
+  className="bg-blue-500 text-white px-5 py-2 rounded-full"
+>
+  📄 Import Resume
+</button>
+
+<input
+  ref={fileInputRef}
+  hidden
+  type="file"
+  accept=".pdf,.doc,.docx"
+  onChange={handleResumeImport}
+/>
+
           <button
             onClick={handleDownload}
             disabled={isDownloading}

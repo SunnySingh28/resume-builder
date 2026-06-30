@@ -160,16 +160,16 @@ function ModernTemplate({ resumeData }) {
                 Skills
               </h2>
 
-              <div className="flex flex-wrap gap-2">
-              { resumeData.skills.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="bg-green-600 text-white px-3 py-1 rounded-full text-sm"
-                  >
-                    {skill.name||skill}
-                  </span>
-                ))}
-              </div>
+             <div className="space-y-2">
+  {resumeData.skills.map((skill, index) => (
+    <div
+      key={index}
+      className="bg-green-600 text-white px-3 py-2 rounded-md text-sm"
+    >
+      {skill.name || skill}
+    </div>
+  ))}
+</div>
             </section>
           )}
 

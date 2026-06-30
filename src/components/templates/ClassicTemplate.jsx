@@ -216,11 +216,13 @@ const SectionTitle = ({ title }) => (
 
           <SectionTitle title="SKILLS" />
 
-         <p className="text-[15px] leading-6">
-  {resumeData.skills
-    .map(skill => skill.name || skill)
-    .join(", ")}
-</p>
+         <div className="space-y-1 text-[15px] leading-6">
+  {resumeData.skills.map((skill, index) => (
+    <p key={index}>
+      {skill.name || skill}
+    </p>
+  ))}
+</div>
 
         </section>
       )}

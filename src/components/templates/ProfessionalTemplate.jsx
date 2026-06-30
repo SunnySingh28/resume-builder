@@ -212,19 +212,19 @@ function ProfessionalTemplate({
       Skills
     </h3>
 
-   <div className="text-sm text-black leading-relaxed">
+  {resumeData.skills.length > 0 && (
+  <div className="mb-4">
 
-  {resumeData.skills.map((skill, index) => (
-    <span key={skill.id}>
-      {skill.name}
+    <div className="space-y-1 text-sm text-black">
+      {resumeData.skills.map((skill) => (
+        <div key={skill.id}>
+          {skill.name}
+        </div>
+      ))}
+    </div>
 
-      {index !==
-        resumeData.skills.length - 1 &&
-        ", "}
-    </span>
-  ))}
-
-</div>
+  </div>
+)}
 
   </div>
 )}

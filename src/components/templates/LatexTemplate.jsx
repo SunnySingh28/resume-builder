@@ -187,18 +187,13 @@ function LatexTemplate({ resumeData }) {
     Technical Skills
   </h2>
 
-  <div className="text-sm leading-6">
-    <p>
-      <span className="font-bold">
-        Languages:
-      </span>{" "}
-      {resumeData.skills
-        .map((skill) =>
-          skill.name || skill
-        )
-        .join(", ")}
+ <div className="text-sm leading-6 space-y-1">
+  {resumeData.skills.map((skill, index) => (
+    <p key={index}>
+      {skill.name || skill}
     </p>
-  </div>
+  ))}
+</div>
 </section>
       )}
 

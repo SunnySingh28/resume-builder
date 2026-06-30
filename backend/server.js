@@ -1,9 +1,15 @@
+import dotenv from "dotenv";
+dotenv.config();
+
+console.log(
+  "SERVER KEY:",
+  process.env.GROQ_API_KEY?.substring(0,12)
+);
+
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import aiRoutes from "./routes/ai.js";
 
-dotenv.config();
 
 const app = express();
 
@@ -18,6 +24,8 @@ app.get("/", (req, res) => {
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(
-    `Server Running on ${process.env.PORT || 5000}`
+    `Server Running on ${
+      process.env.PORT || 5000
+    }`
   );
 });
