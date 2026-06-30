@@ -25,6 +25,17 @@ export const importResume = async (file) => {
       },
     }
   );
+    return response.data;
+};
+
+  export const improveSection = async (section, resumeData) => {
+  const response = await axios.post(
+    "http://localhost:5000/api/ai/improve-section",
+    {
+      section,
+      resumeData,
+    }
+  );
 
   return response.data;
 };

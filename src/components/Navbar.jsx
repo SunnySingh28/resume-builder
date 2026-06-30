@@ -5,6 +5,7 @@ import { jsPDF } from "jspdf";
 import {
   generateResume,
   importResume,
+  improveSection,
 } from "../services/aiService";
 
 function Navbar({
@@ -253,11 +254,128 @@ alert("Resume Imported Successfully");
   try {
     setIsGenerating(true);
 
-    const response = await generateResume(aiPrompt);
+    const prompt = aiPrompt.toLowerCase();
+
+let section = null;
+
+if (prompt.includes("summary")) {
+  section = "summary";
+} else if (prompt.includes("about")) {
+  section = "aboutMe";
+} else if (prompt.includes("skill")) {
+  section = "skills";
+} else if (prompt.includes("experience")) {
+  section = "experience";
+} else if (prompt.includes("project")) {
+  section = "projects";
+} else if (prompt.includes("education")) {
+  section = "education";
+} else if (prompt.includes("achievement")) {
+  section = "achievements";
+}
+
+    const response = section
+  ? await improveSection(section, resumeData)
+  : await generateResume(aiPrompt);
 
     console.log(response);
 
     const ai = response.data;
+
+    if (section) {
+
+  setResumeData((prev) => {
+
+    switch (section) {
+
+      case "summary":
+        return {
+          ...prev,
+          summary: ai.summary || prev.summary,
+        };
+
+      case "aboutMe":
+        return {
+          ...prev,
+          aboutMe: ai.aboutMe || prev.aboutMe,
+        };
+
+      case "skills":
+        return {
+          ...prev,
+          skills: Array.isArray(ai.skills)
+            ? ai.skills.map((skill, index) => ({
+                id: Date.now() + index,
+                name: skill,
+              }))
+            : prev.skills,
+        };
+
+      case "experience":
+        return {
+          ...prev,
+          experience: Array.isArray(ai.experience)
+            ? ai.experience.map((exp, index) => ({
+                id: Date.now() + index,
+                title: exp.title || "",
+                company: exp.company || "",
+                location: exp.location || "",
+                startMonth: exp.startMonth || "",
+                startYear: exp.startYear || "",
+                endMonth: exp.endMonth || "",
+                endYear: exp.endYear || "",
+                current: exp.current || false,
+                bullets: Array.isArray(exp.bullets)
+                  ? exp.bullets.join("\n")
+                  : exp.bullets || "",
+              }))
+            : prev.experience,
+        };
+
+      case "projects":
+        return {
+          ...prev,
+          projects: Array.isArray(ai.projects)
+            ? ai.projects.map((project, index) => ({
+                id: Date.now() + index,
+                title: project.name || project.title || "",
+                techStack: Array.isArray(project.technologies)
+                  ? project.technologies.join(", ")
+                  : project.techStack || "",
+                description: project.description || "",
+                githubLink: project.githubLink || "",
+                projectMonth: project.projectMonth || "",
+                projectYear: project.projectYear || "",
+              }))
+            : prev.projects,
+        };
+
+      case "education":
+        return {
+          ...prev,
+          education: Array.isArray(ai.education)
+            ? ai.education.map((edu, index) => ({
+                id: Date.now() + index,
+                degree: edu.degree || "",
+                school: edu.school || "",
+                location: edu.location || "",
+                startYear: edu.startYear || "",
+                endYear: edu.endYear || "",
+                current: edu.current || false,
+            }))
+            : prev.education,
+        };
+
+      default:
+        return prev;
+    }
+
+  });
+
+  alert(`✅ ${section} updated successfully`);
+
+  return;
+}
 
     setResumeData((prev) => ({
       ...prev,

@@ -363,4 +363,170 @@ res.json({
   }
 );
 
+router.post("/improve-section", async (req, res) => {
+  try {
+    const groq = new Groq({
+      apiKey: process.env.GROQ_API_KEY,
+    });
+
+    const { section, resumeData } = req.body;
+
+    // Remove unnecessary data before sending to AI
+const cleanedResume = {
+  personal: {
+    name: resumeData.personal?.name || "",
+    title: resumeData.personal?.title || "",
+    email: resumeData.personal?.email || "",
+  },
+
+  summary: resumeData.summary || "",
+
+  aboutMe: resumeData.aboutMe || "",
+
+  skills: resumeData.skills?.map((s) =>
+    typeof s === "string" ? s : s.name
+  ) || [],
+
+  experience: resumeData.experience?.map((exp) => ({
+    title: exp.title,
+    company: exp.company,
+    bullets: exp.bullets,
+  })) || [],
+
+  projects: resumeData.projects?.map((project) => ({
+    title: project.title,
+    techStack: project.techStack,
+    description: project.description,
+  })) || [],
+};
+
+    if (!section || !resumeData) {
+      return res.status(400).json({
+        success: false,
+        error: "section and resumeData are required",
+      });
+    }
+
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.4,
+      messages: [
+        {
+          role: "system",
+          content: `
+You are an expert ATS Resume Writer.
+
+You will receive:
+1. An existing resume.
+2. A section name.
+
+IMPORTANT RULES:
+
+- Improve ONLY the requested section.
+- NEVER modify any other section.
+- NEVER invent extra fields.
+- Return ONLY valid JSON.
+
+Examples:
+
+If section = summary
+
+Return
+
+{
+  "summary":"..."
+}
+
+If section = aboutMe
+
+Return
+
+{
+  "aboutMe":"..."
+}
+
+If section = skills
+
+Return
+
+{
+  "skills":[]
+}
+
+If section = experience
+
+Return
+
+{
+  "experience":[]
+}
+
+If section = projects
+
+Return
+
+{
+  "projects":[]
+}
+
+If section = education
+
+Return
+
+{
+  "education":[]
+}
+
+If section = achievements
+
+Return
+
+{
+  "achievements":[]
+}
+`,
+        },
+        {
+          role: "user",
+          content: `
+Section:
+${section}
+
+Current Resume:
+
+${JSON.stringify(cleanedResume, null, 2)}
+`,
+        },
+      ],
+    });
+
+    let response = completion.choices[0].message.content;
+
+    response = response
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .trim();
+
+    const firstBrace = response.indexOf("{");
+    const lastBrace = response.lastIndexOf("}");
+
+    if (firstBrace !== -1 && lastBrace !== -1) {
+      response = response.substring(firstBrace, lastBrace + 1);
+    }
+
+    res.json({
+      success: true,
+      data: JSON.parse(response),
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
 export default router;
